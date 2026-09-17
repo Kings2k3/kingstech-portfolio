@@ -235,48 +235,29 @@ setMenuState(false);
   }
 
   root.setAttribute('aria-busy', 'true');
-  const minVisibleMs = 240;
-  const hardDeadlineMs = 1250;
-  let liquidReady = root.classList.contains('liquid-glass-ready');
-  let heroReady = false;
+  const minVisibleMs = 80;
+  const hardDeadlineMs = 260;
   let finished = false;
 
   const finish = () => {
     if (finished) return;
-    if (!liquidReady || !heroReady) return;
     finished = true;
-    const elapsed = performance.now() - boot.startedAt;
+    const elapsed = performance.now() - (boot.startedAt || performance.now());
     const wait = Math.max(0, minVisibleMs - elapsed);
     window.setTimeout(() => {
       root.classList.add('boot-complete');
       root.removeAttribute('aria-busy');
       try { localStorage.setItem(boot.key, 'ready'); } catch (_) {}
-      window.setTimeout(() => loader.remove(), 340);
+      window.setTimeout(() => loader.remove(), 200);
     }, wait);
   };
 
-  window.addEventListener('kings:liquidready', () => { liquidReady = true; finish(); }, { once: true });
-  window.addEventListener('ray:liquidready', () => { liquidReady = true; finish(); }, { once: true });
-
-  const hero = document.querySelector('.portrait-img');
-  if (!hero) {
-    heroReady = true;
-  } else if (hero.complete && hero.naturalWidth) {
-    heroReady = true;
-  } else {
-    const settleHero = () => { heroReady = true; finish(); };
-    hero.addEventListener('load', settleHero, { once: true });
-    hero.addEventListener('error', settleHero, { once: true });
-    hero.decode?.().then(settleHero, () => {});
-  }
-
-  finish();
-  window.setTimeout(() => {
-    if (finished) return;
-    liquidReady = true;
-    heroReady = true;
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
     finish();
-  }, hardDeadlineMs);
+  } else {
+    document.addEventListener('DOMContentLoaded', finish, { once: true });
+  }
+  window.setTimeout(finish, hardDeadlineMs);
 })();
 
 studioToggle.addEventListener('click', () => { setStudioState(!studio.classList.contains('open')); setMenuState(false); });

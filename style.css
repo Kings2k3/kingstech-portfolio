@@ -3721,3 +3721,17 @@ html body :is(.brand-gold-action, .nav-cta, .btn-primary, .project-more-toggle) 
   color: #000000 !important;
   stroke: #000000 !important;
 }
+
+/* =========================================================
+   INSTANT HERO TEXT REVEAL
+   Reveals hero headline, subtext, and actions immediately
+   on open without sluggish animation delays.
+========================================================= */
+.hero-copy :is(.eyebrow, h1, .hero-sub, .hero-actions, .hero-meta),
+.hero-copy .reveal,
+.hero-copy .reveal.visible {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: opacity .15s ease-out !important;
+}
+
