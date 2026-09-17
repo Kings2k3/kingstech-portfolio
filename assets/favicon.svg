@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" width="64" height="64">
+  <defs>
+    <linearGradient id="fav-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F2D79E"/>
+      <stop offset="50%" stop-color="#B08D57"/>
+      <stop offset="100%" stop-color="#7B5B26"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0A0A0A"/>
+  <!-- Hexagon outline -->
+  <path d="M32 6 L54 18.7 L54 44.3 L32 57 L10 44.3 L10 18.7 Z" fill="none" stroke="url(#fav-gold)" stroke-width="2" stroke-opacity="0.5"/>
+  <!-- Geometric Crown / K structure -->
+  <path d="M18 42 L23 22 L32 30 L41 22 L46 42 Z" fill="url(#fav-gold)" fill-opacity="0.2" stroke="url(#fav-gold)" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- Points -->
+  <circle cx="32" cy="30" r="2.8" fill="#F2D79E"/>
+  <circle cx="23" cy="22" r="2.2" fill="#F2D79E"/>
+  <circle cx="41" cy="22" r="2.2" fill="#F2D79E"/>
+  <!-- Base bar -->
+  <path d="M20 46 L44 46" stroke="url(#fav-gold)" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

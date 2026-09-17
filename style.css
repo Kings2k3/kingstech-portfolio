@@ -1,0 +1,3723 @@
+/* =========================================================
+   01. DESIGN TOKENS
+========================================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; min-width: 0; }
+
+:root {
+  color-scheme: dark;
+  --bg: #000000; --bg-rgb: 0, 0, 0;
+  --surface: #0D0D0D; --surface-rgb: 13, 13, 13;
+  --surface-soft: #151515; --surface-raised: #1A1A1A;
+  --text-primary: #F7F4ED; --text-secondary: #C9C1B6; --text-muted: #9B9287;
+  --border: rgba(247, 244, 237, 0.12); --border-mid: rgba(247, 244, 237, 0.22);
+  --accent: #B08D57; --accent-rgb: 176, 141, 87;
+  --accent-soft: rgba(176, 141, 87, 0.13); --accent-border: rgba(176, 141, 87, 0.38);
+  --button-text: #070707;
+  --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+  --radius: 0px;
+  --max-w: 1440px;
+  --container-w: min(80vw, var(--max-w));
+  --container-w-tablet: min(88vw, 1200px);
+  --container-w-mobile: calc(100vw - 40px);
+  --section-pad: clamp(84px, 10vw, 146px);
+  --section-pad-tight: clamp(64px, 8vw, 112px);
+  --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-button: 'Inter', system-ui, sans-serif;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Step colors for execution roadmap */
+  --sc1: var(--accent);
+  --sc2: color-mix(in srgb, var(--accent) 78%, #C06B3E 22%);
+  --sc3: color-mix(in srgb, var(--accent) 58%, #D4AA40 42%);
+  --sc4: color-mix(in srgb, var(--accent) 36%, #72A878 64%);
+  --sc5: color-mix(in srgb, var(--text-secondary) 60%, #5E7A9A 40%);
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F7F3EC; --bg-rgb: 247, 243, 236;
+  --surface: #FFFDF8; --surface-rgb: 255, 253, 248;
+  --surface-soft: #ECE4D8; --surface-raised: #FFFFFF;
+  --text-primary: #14120F; --text-secondary: #3C362F; --text-muted: #665C52;
+  --border: rgba(20, 18, 15, 0.14); --border-mid: rgba(20, 18, 15, 0.26);
+  --shadow: 0 24px 70px rgba(72, 54, 34, 0.14);
+  --button-text: #070707;
+}
+
+html[data-background="black"]:not([data-theme="light"]) { --bg: #000000; --bg-rgb: 0,0,0; --surface: #0D0D0D; --surface-rgb: 13,13,13; --surface-soft: #151515; --surface-raised: #1A1A1A; }
+html[data-background="charcoal"]:not([data-theme="light"]) { --bg: #0A0A0A; --bg-rgb: 10,10,10; --surface: #121212; --surface-rgb: 18,18,18; --surface-soft: #1A1A1A; --surface-raised: #202020; }
+html[data-background="espresso"]:not([data-theme="light"]) { --bg: #0B0907; --bg-rgb: 11,9,7; --surface: #15110D; --surface-rgb: 21,17,13; --surface-soft: #1D1711; --surface-raised: #241D15; }
+html[data-background="slate"]:not([data-theme="light"]) { --bg: #080B0D; --bg-rgb: 8,11,13; --surface: #11161A; --surface-rgb: 17,22,26; --surface-soft: #182027; --surface-raised: #1D2630; }
+html[data-background="paper"][data-theme="light"] { --bg: #F7F3EC; --bg-rgb: 247,243,236; --surface: #FFFDF8; --surface-rgb: 255,253,248; --surface-soft: #ECE4D8; --surface-raised: #FFFFFF; }
+html[data-background="porcelain"][data-theme="light"] { --bg: #F6F5F1; --bg-rgb: 246,245,241; --surface: #FFFFFF; --surface-rgb: 255,255,255; --surface-soft: #E7E4DC; --surface-raised: #FFFFFF; }
+html[data-background="warm"][data-theme="light"] { --bg: #EFE6DA; --bg-rgb: 239,230,218; --surface: #FBF5EE; --surface-rgb: 251,245,238; --surface-soft: #E1D4C5; --surface-raised: #FFFDF9; }
+
+html[data-font-head="jakarta"] { --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif; }
+html[data-font-head="manrope"] { --font-heading: 'Manrope', system-ui, sans-serif; }
+html[data-font-head="grotesk"] { --font-heading: 'Space Grotesk', system-ui, sans-serif; }
+html[data-font-head="plex"] { --font-heading: 'IBM Plex Sans', system-ui, sans-serif; }
+html[data-font-head="serif"] { --font-heading: 'Source Serif 4', Georgia, serif; }
+html[data-font-body="inter"] { --font-body: 'Inter', system-ui, sans-serif; }
+html[data-font-body="manrope"] { --font-body: 'Manrope', system-ui, sans-serif; }
+html[data-font-body="plex"] { --font-body: 'IBM Plex Sans', system-ui, sans-serif; }
+html[data-font-body="grotesk"] { --font-body: 'Space Grotesk', system-ui, sans-serif; }
+html[data-font-button="inter"] { --font-button: 'Inter', system-ui, sans-serif; }
+html[data-font-button="manrope"] { --font-button: 'Manrope', system-ui, sans-serif; }
+html[data-font-button="plex"] { --font-button: 'IBM Plex Sans', system-ui, sans-serif; }
+html[data-font-button="grotesk"] { --font-button: 'Space Grotesk', system-ui, sans-serif; }
+html[data-accent="gold"] { --accent: #B08D57; --accent-rgb: 176,141,87; }
+html[data-accent="black"] { --accent: #F3EFE7; --accent-rgb: 243,239,231; }
+html[data-accent="bronze"] { --accent: #A66F47; --accent-rgb: 166,111,71; }
+html[data-accent="sage"] { --accent: #7C8B72; --accent-rgb: 124,139,114; }
+html[data-accent="steel"] { --accent: #8E9AA7; --accent-rgb: 142,154,167; }
+html[data-theme="light"][data-accent="black"] { --accent: #111111; --accent-rgb: 17,17,17; --button-text: #000000; }
+html[data-accent] { --accent-soft: rgba(var(--accent-rgb), 0.13); --accent-border: rgba(var(--accent-rgb), 0.38); }
+
+/* =========================================================
+   02. BASE
+========================================================= */
+html { width: 100%; max-width: 100%; overflow-x: hidden; scroll-behavior: smooth; }
+body { width: 100%; max-width: 100%; overflow-x: hidden; background: var(--bg); color: var(--text-primary); font-family: var(--font-body); font-size: 17px; line-height: 1.7; -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision; }
+body.theme-open, body.menu-open { overflow: hidden; }
+a { color: inherit; text-decoration: none; }
+button, input, select { font: inherit; }
+button { color: inherit; background: none; border: 0; cursor: pointer; }
+img { display: block; max-width: 100%; }
+p, li, span { font-family: var(--font-body); }
+p { color: var(--text-secondary); }
+main, section, header, footer { width: 100%; max-width: 100%; overflow-x: clip; }
+@supports not (overflow: clip) { main, section, header, footer { overflow-x: hidden; } }
+.container { width: var(--container-w); max-width: calc(100vw - 40px); margin: 0 auto; position: relative; z-index: 2; }
+
+
+
+
+/* =========================================================
+   ANIMATION ADDITIONS
+========================================================= */
+
+/* ── 1. CUSTOM MAGNETIC CURSOR ──────────────────────────── */
+.cur-dot,
+.cur-ring {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.cur-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  transition: opacity .3s;
+}
+
+.cur-ring {
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(var(--accent-rgb), .5);
+  transition: width  .22s var(--ease),
+              height .22s var(--ease),
+              border-color .22s var(--ease),
+              opacity .3s;
+}
+
+.cur-ring.is-hover {
+  width: 54px;
+  height: 54px;
+  border-color: rgba(var(--accent-rgb), .92);
+  background: rgba(var(--accent-rgb), .06);
+}
+
+.cur-ring.is-click {
+  width: 22px;
+  height: 22px;
+  border-color: var(--accent);
+}
+
+/* Hide custom cursor on touch devices */
+@media (hover: none) {
+  .cur-dot, .cur-ring { display: none; }
+}
+
+/* ── 2. HERO GRAIN TEXTURE ───────────────────────────────── */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: .038;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 155px 155px;
+  animation: heroGrain .75s steps(1) infinite;
+}
+
+@keyframes heroGrain {
+  0%   { background-position:   0px   0px; }
+  11%  { background-position: -22px -32px; }
+  22%  { background-position:  32px  18px; }
+  33%  { background-position: -16px  42px; }
+  44%  { background-position:  44px -16px; }
+  55%  { background-position: -32px  12px; }
+  66%  { background-position:  18px -44px; }
+  77%  { background-position: -44px  32px; }
+  88%  { background-position:  12px  48px; }
+  100% { background-position: -20px   4px; }
+}
+
+/* ── 3. HERO FLOATING ACCENT ORBS ───────────────────────── */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(62px);
+  will-change: transform;
+  animation: orbDrift var(--orb-dur, 13s) ease-in-out infinite alternate;
+}
+
+@keyframes orbDrift {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(var(--orb-tx, 35px), var(--orb-ty, -25px)) scale(1.06); }
+}
+
+/* ── 4. PORTRAIT FRAME SCAN LINE ────────────────────────── */
+.portrait-frame::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  top: 0;
+  height: 1px;
+  z-index: 6;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--accent-rgb), .85) 28%,
+    rgba(var(--accent-rgb), 1)   50%,
+    rgba(var(--accent-rgb), .85) 72%,
+    transparent 100%
+  );
+  box-shadow: 0 0 14px 3px rgba(var(--accent-rgb), .45);
+  animation: scanDown 5.5s ease-in-out 2s infinite;
+  opacity: 0;
+}
+
+@keyframes scanDown {
+  0%   { top: 0%;   opacity: 0; }
+  4%   {            opacity: 1; }
+  96%  {            opacity: .65; }
+  100% { top: 100%; opacity: 0; }
+}
+
+
+
+/* ── 6. PARALLAX WILL-CHANGE HINTS ──────────────────────── */
+.hero-copy,
+.portrait-stage,
+.portrait-frame {
+  will-change: transform;
+}
+
+/* ── 7. STAT TILE ENTRANCE SWEEP ────────────────────────── */
+@keyframes tileSweep {
+  0%   { background-position: -200% center; }
+  100% { background-position:  220% center; }
+}
+
+.meta-tile.do-sweep {
+  background-image: linear-gradient(
+    105deg,
+    transparent       0%,
+    rgba(var(--accent-rgb), .11) 46%,
+    rgba(var(--accent-rgb), .22) 50%,
+    rgba(var(--accent-rgb), .11) 54%,
+    transparent       100%
+  );
+  background-size: 220% 100%;
+  animation: tileSweep 1.1s ease forwards;
+}
+
+
+
+/* =========================================================
+   03. NAVIGATION
+========================================================= */
+.site-nav { position: fixed; inset: 0 0 auto 0; z-index: 80; padding: 24px 0; border-bottom: 1px solid transparent; transition: padding .36s var(--ease), background .36s var(--ease), border-color .36s var(--ease); }
+.site-nav.scrolled { padding: 14px 0; background: rgba(var(--bg-rgb), .88); backdrop-filter: blur(18px); border-color: var(--border); }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+.wordmark { display: inline-flex; align-items: center; gap: 12px; flex: 0 0 auto; color: var(--text-primary); font-family: var(--font-heading); font-size: 25px; font-weight: 600; line-height: 1; letter-spacing: -.02em; }
+.wordmark-mark { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--accent-border); border-radius: 50%; color: var(--accent); font-family: var(--font-button); font-size: 16px; font-weight: 600; }
+.nav-links { display: flex; align-items: center; justify-content: center; flex: 1 1 auto; gap: clamp(18px, 2.1vw, 30px); }
+.nav-links a, .mobile-drawer a, .footer-col a { transition: color .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease), transform .2s var(--ease); }
+.nav-links a { color: var(--text-secondary); font-family: var(--font-button); font-size: 13px; font-weight: 600; letter-spacing: .045em; text-transform: uppercase; white-space: nowrap; }
+.nav-links a:hover, .nav-links a:focus-visible { color: var(--text-primary); }
+.nav-actions { display: flex; align-items: center; gap: 12px; flex: 0 0 auto; }
+.nav-cta, .icon-btn, .mobile-toggle { min-height: 44px; border: 1px solid var(--border-mid); background: rgba(var(--surface-rgb), .72); backdrop-filter: blur(14px); }
+.nav-cta { display: inline-flex; align-items: center; justify-content: center; padding: 0 22px; border-color: var(--accent-border); color: #000000; -webkit-text-fill-color: #000000; font-family: var(--font-button); font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+.icon-btn, .mobile-toggle { width: 44px; display: inline-flex; align-items: center; justify-content: center; color: var(--text-secondary); font-size: 16px; }
+.nav-cta:hover, .icon-btn:hover, .mobile-toggle:hover, .nav-cta:focus-visible, .icon-btn:focus-visible, .mobile-toggle:focus-visible { transform: translateY(-1px); border-color: var(--accent-border); background: var(--accent-soft); }
+.mobile-toggle { display: none; position: relative; }
+.mobile-toggle .hamburger-icon { position: relative; width: 18px; height: 12px; display: block; }
+.mobile-toggle .hamburger-icon::before, .mobile-toggle .hamburger-icon::after { content: ""; position: absolute; left: 0; width: 18px; height: 2px; background: currentColor; transition: top .22s var(--ease), transform .22s var(--ease); }
+.mobile-toggle .hamburger-icon::before { top: 0; }
+.mobile-toggle .hamburger-icon::after { top: 10px; }
+.mobile-toggle.open .hamburger-icon::before { top: 5px; transform: rotate(45deg); }
+.mobile-toggle.open .hamburger-icon::after { top: 5px; transform: rotate(-45deg); }
+.mobile-drawer { display: none; position: fixed; top: 74px; left: 20px; right: 20px; z-index: 78; padding: 22px; background: rgba(var(--surface-rgb), .98); border: 1px solid var(--border-mid); box-shadow: var(--shadow); backdrop-filter: blur(18px); opacity: 0; pointer-events: none; transform: translateY(-12px); transition: opacity .28s var(--ease), transform .28s var(--ease); }
+.mobile-drawer.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.mobile-drawer a { display: block; padding: 14px 0; border-bottom: 1px solid var(--border); color: var(--text-secondary); font-family: var(--font-button); font-size: 15px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.mobile-drawer a:hover, .mobile-drawer a:focus-visible { color: var(--text-primary); }
+
+.wordmark-logo {
+  display: block;
+  width: auto;
+  height: 50px;
+  max-width: 170px;
+  object-fit: contain;
+}
+
+/* =========================================================
+   04. THEME STUDIO
+========================================================= */
+.theme-studio { position: fixed; top: 92px; right: 28px; z-index: 90; width: min(430px, calc(100vw - 40px)); max-height: calc(100svh - 116px); overflow: auto; background: rgba(var(--surface-rgb), .98); border: 1px solid var(--border-mid); box-shadow: var(--shadow); backdrop-filter: blur(24px); opacity: 0; pointer-events: none; transform: translateY(-12px) scale(.985); transition: opacity .28s var(--ease), transform .28s var(--ease); }
+.theme-studio.open { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+.studio-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 24px 24px 18px; border-bottom: 1px solid var(--border); }
+.studio-kicker, .studio-label { color: var(--text-secondary); font-family: var(--font-button); font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.studio-kicker { margin-bottom: 8px; color: var(--accent); font-size: 12px; letter-spacing: .09em; }
+.studio-title { color: var(--text-primary); font-family: var(--font-heading); font-size: 29px; font-weight: 600; line-height: 1.1; }
+.studio-close { color: var(--text-secondary); font-size: 28px; line-height: 1; }
+.studio-body { display: grid; gap: 22px; padding: 22px 24px 24px; }
+.studio-group { display: grid; gap: 12px; }
+.segmented { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border: 1px solid var(--border); background: rgba(var(--bg-rgb), .24); }
+.segment { min-height: 42px; color: var(--text-secondary); font-family: var(--font-button); font-size: 13px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; }
+.segment.active { background: var(--accent); color: var(--button-text); }
+.option-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.option { padding: 14px 12px; border: 1px solid var(--border); color: var(--text-secondary); text-align: left; }
+.option strong { display: block; margin-bottom: 3px; color: var(--text-primary); font-family: var(--font-button); font-size: 14px; font-weight: 600; }
+.option span { display: block; color: var(--text-muted); font-size: 13px; }
+.option.active, .option:hover, .option:focus-visible { border-color: var(--accent-border); background: var(--accent-soft); }
+.swatches { display: flex; flex-wrap: wrap; gap: 10px; }
+.swatch { position: relative; width: 46px; height: 46px; border: 1px solid var(--border-mid); }
+.swatch[hidden] { display: none !important; }
+.swatch.active::after { content: ""; position: absolute; inset: 6px; border: 2px solid rgba(255,255,255,.86); mix-blend-mode: difference; }
+.tone-note { padding-left: 14px; border-left: 2px solid var(--accent-border); color: var(--text-secondary); font-size: 15px; line-height: 1.65; }
+
+/* =========================================================
+   05. HERO
+========================================================= */
+.hero { position: relative; min-height: 100svh; display: flex; align-items: center; overflow: hidden; isolation: isolate; padding: 112px 0 58px; }
+.hero::before { content: ""; position: absolute; inset: 0; z-index: 0; background: radial-gradient(ellipse 55% 70% at 78% 42%, rgba(var(--accent-rgb), .10), transparent 58%), linear-gradient(90deg, rgba(var(--bg-rgb), 1) 0%, rgba(var(--bg-rgb), .89) 53%, rgba(var(--bg-rgb), 1) 100%); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, .98fr) minmax(320px, .78fr); align-items: center; gap: clamp(24px, 4vw, 72px); min-height: calc(100svh - 180px); overflow: hidden; }
+.hero-copy { position: relative; z-index: 5; padding: 34px 0 54px; }
+.eyebrow, .section-label, .project-cat, .service-num, .workflow-step small { color: var(--accent); font-family: var(--font-button); font-size: 14px; font-weight: 600; letter-spacing: .075em; text-transform: uppercase; }
+.eyebrow { display: inline-flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+.eyebrow::before { content: ""; width: 24px; height: 1px; background: currentColor; opacity: .75; }
+.hero h1 { max-width: 760px; margin-bottom: 26px; color: var(--text-primary); font-family: var(--font-heading); font-size: clamp(38px, 4.4vw, 64px); font-weight: 600; letter-spacing: -.025em; line-height: 1.1; text-wrap: balance; overflow-wrap: break-word; }
+html[data-font-head="serif"] .hero h1 { letter-spacing: -.035em; font-weight: 700; }
+.hero-sub { max-width: 560px; margin-bottom: 34px; color: var(--text-secondary); font-size: clamp(17px, 1.35vw, 20px); line-height: 1.65; }
+.hero-actions { display: flex; align-items: center; flex-wrap: wrap; column-gap: 12px; row-gap: 18px;}
+.btn-primary, .btn-ghost { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 0 28px; font-family: var(--font-button); font-size: 14px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; transition: transform .24s var(--ease), background .24s var(--ease), border-color .24s var(--ease), color .24s var(--ease); }
+.btn-primary { border: 1px solid var(--accent); background: var(--accent); color: var(--button-text); }
+.btn-ghost { border: 1px solid var(--border-mid); background: rgba(var(--surface-rgb), .66); color: var(--text-primary); }
+.btn-primary:hover, .btn-ghost:hover, .btn-primary:focus-visible, .btn-ghost:focus-visible { transform: translateY(-2px); }
+.btn-ghost:hover, .btn-ghost:focus-visible { border-color: var(--accent-border); background: var(--accent-soft); }
+.btn-cv { padding-inline: 22px 24px; border-color: var(--accent-border); background: rgba(var(--surface-rgb), .72); color: var(--text-primary); }
+.btn-cv:hover, .btn-cv:focus-visible { border-color: var(--accent-border); background: var(--accent-soft); color: var(--accent); }
+.cv-icon { width: 18px; height: 18px; flex: 0 0 auto; }
+.hero-meta { max-width: 670px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 58px; border: 0; background: transparent; }
+.meta-tile { background: transparent; padding: 0; }
+.meta-tile strong { display: block; margin-bottom: 7px; color: var(--text-primary); font-family: var(--font-heading); font-size: 24px; font-weight: 600; line-height: 1.12; letter-spacing: -.025em; }
+.meta-tile span { color: var(--text-secondary); font-family: var(--font-button); font-size: 13px; font-weight: 700; letter-spacing: .035em; text-transform: uppercase; }
+.portrait-stage { position: relative; z-index: 4; min-height: 620px; display: grid; place-items: center; }
+.portrait-frame { position: relative; width: min(460px, 100%); max-width: 100%; height: 600px; overflow: hidden; border: 1px solid var(--border-mid); background: var(--surface); box-shadow: var(--shadow); isolation: isolate; }
+.portrait-frame::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, rgba(var(--bg-rgb), .88) 0%, rgba(var(--bg-rgb), .24) 34%, transparent 58%); pointer-events: none; }
+.portrait-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; filter: contrast(1.02) brightness(0.98); display: block !important; }
+.portrait-img-light { display: none; }
+html[data-theme="light"] .portrait-img-dark { display: none; }
+html[data-theme="light"] .portrait-img-light { display: block; }
+.portrait-status { position: absolute; top: 18px; right: 18px; z-index: 7; display: inline-flex; align-items: center; gap: 10px; min-height: 40px; max-width: calc(100% - 36px); padding: 0 14px; border: 1px solid var(--accent-border); background: rgba(var(--surface-rgb), .88); color: var(--text-primary); font-family: var(--font-button); font-size: 13px; font-weight: 600; letter-spacing: .045em; text-transform: uppercase; white-space: nowrap; backdrop-filter: blur(14px); box-shadow: 0 16px 40px rgba(0,0,0,.22); }
+.portrait-status::before { content: ""; width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: var(--accent); box-shadow: 0 0 18px rgba(var(--accent-rgb), .62); }
+.scroll-cue { position: absolute; left: 50%; bottom: 28px; z-index: 8; display: grid; justify-items: center; gap: 9px; color: var(--text-muted); font-family: var(--font-button); font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; transform: translateX(-50%); }
+.scroll-cue::after { content: ""; width: 1px; height: 38px; background: linear-gradient(to bottom, var(--text-muted), transparent); }
+
+/* =========================================================
+   06. SECTIONS -shared
+========================================================= */
+section { position: relative; z-index: 2; }
+.section-pad { padding: var(--section-pad) 0; }
+.section-divider { border-top: 1px solid var(--border); }
+.surface-section { background: linear-gradient(180deg, rgba(var(--surface-rgb), .84), rgba(var(--surface-rgb), .62)); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.section-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; margin-bottom: clamp(48px, 6vw, 76px); }
+.section-label { margin-bottom: 14px; }
+.section-title { color: var(--text-primary); font-family: var(--font-heading); font-size: clamp(30px, 3.2vw, 46px); font-weight: 600; line-height: 1.15; letter-spacing: -.02em; text-wrap: balance; overflow-wrap: break-word; }
+html[data-font-head="serif"] .section-title { letter-spacing: -.025em; font-weight: 700; }
+.section-copy { max-width: 540px; color: var(--text-secondary); font-size: 17px; line-height: 1.62; }
+.section-link { display: inline-flex; align-items: center; gap: 10px; padding-bottom: 4px; border-bottom: 1px solid var(--border-mid); color: var(--text-primary); font-family: var(--font-button); font-size: 14px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.section-link:hover, .section-link:focus-visible { color: var(--accent); border-color: var(--accent-border); }
+
+/* =========================================================
+   07. BUILD DIRECTION (fit-console)
+========================================================= */
+.fit-console, .services-grid, .workflow, .about-card, .contact-grid { border: 1px solid var(--border); background: var(--border); max-width: 100%; overflow: hidden; }
+.fit-console { display: grid; grid-template-columns: minmax(260px, 320px) minmax(0, 1fr); gap: 1px; box-shadow: var(--shadow); }
+.fit-tabs { display: grid; gap: 10px; padding: 18px; background: rgba(var(--surface-rgb), .80); }
+.fit-tab { width: 100%; min-height: 74px; padding: 14px 16px; border: 1px solid var(--border); background: rgba(var(--bg-rgb), .18); color: var(--text-secondary); text-align: left; }
+.fit-tab:hover, .fit-tab:focus-visible { transform: translateX(3px); border-color: var(--accent-border); }
+.fit-tab.active { background: var(--accent-soft); border-color: var(--accent-border); color: var(--text-primary); }
+.fit-tab strong { display: block; color: inherit; font-family: var(--font-heading); font-size: 19px; font-weight: 600; line-height: 1.15; letter-spacing: -.02em; }
+.fit-tab span { display: block; margin-top: 5px; color: var(--text-secondary); font-size: 14px; line-height: 1.45; }
+.fit-display { position: relative; overflow: hidden; padding: clamp(26px, 4vw, 52px); background: rgba(var(--surface-rgb), .78); }
+.fit-display::before { content: ""; position: absolute; top: -40%; right: -22%; width: 48%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, var(--accent-soft), transparent 68%); pointer-events: none; }
+.fit-kicker, .fit-title, .fit-copy, .fit-output { position: relative; z-index: 1; }
+.fit-kicker { margin-bottom: 14px; color: var(--accent); font-family: var(--font-button); font-size: 14px; font-weight: 600; letter-spacing: .075em; text-transform: uppercase; }
+.fit-title { max-width: 720px; margin-bottom: 16px; color: var(--text-primary); font-family: var(--font-heading); font-size: clamp(26px, 2.8vw, 38px); font-weight: 600; line-height: 1.18; letter-spacing: -.02em; text-wrap: balance; overflow-wrap: break-word; }
+.fit-copy { max-width: 700px; margin-bottom: 24px; color: var(--text-secondary); font-size: 17px; line-height: 1.62; }
+.fit-output { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1px; border: 1px solid var(--border); background: var(--border); }
+.fit-output div { padding: 18px; background: rgba(var(--bg-rgb), .23); }
+.fit-output strong { display: block; margin-bottom: 8px; color: var(--text-primary); font-family: var(--font-heading); font-size: 22px; font-weight: 600; line-height: 1.1; letter-spacing: -.02em; }
+.fit-output span { display: block; color: var(--text-secondary); font-size: 15px; line-height: 1.48; }
+
+/* =========================================================
+   08. PROJECTS
+========================================================= */
+.project-list { display: grid; gap: 18px; border: 0; background: transparent; overflow: visible; }
+.project-row { position: relative; display: grid; grid-template-columns: 56px minmax(0, 1.08fr) minmax(220px, .92fr) auto; align-items: center; gap: clamp(16px, 3vw, 42px); padding: 30px 0; border: 0; background: transparent; overflow: visible; isolation: isolate; }
+.project-row + .project-row { border-top: 1px solid var(--border); }
+.project-row::before { content: ""; position: absolute; left: 56px; right: 0; bottom: -1px; height: 1px; background: linear-gradient(90deg, var(--accent-border), transparent 72%); opacity: 0; transform: scaleX(.6); transform-origin: left; transition: opacity .28s var(--ease), transform .28s var(--ease); }
+.project-row:hover::before, .project-row:focus-within::before { opacity: 1; transform: scaleX(1); }
+.project-num { color: var(--text-muted); font-family: var(--font-button); font-size: 15px; font-weight: 600; letter-spacing: .08em; }
+.project-cat { margin-bottom: 10px; }
+.project-title { color: var(--text-primary); font-family: var(--font-heading); font-size: clamp(24px, 2.2vw, 32px); font-weight: 600; line-height: 1.2; letter-spacing: -.015em; }
+.project-desc { color: var(--text-secondary); font-size: 17px; line-height: 1.68; }
+.project-tags, .tech-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+.project-tags { margin-top: 18px; gap: 8px; }
+.tag, .tech-chip { min-height: 32px; display: inline-flex; align-items: center; border: 1px solid var(--border-mid); color: var(--text-secondary); font-family: var(--font-button); font-weight: 600; text-transform: uppercase; }
+.tag { padding: 0 12px; font-size: 13px; letter-spacing: .035em; }
+.project-cta { display: inline-flex; align-items: center; justify-content: flex-end; color: var(--text-secondary); font-family: var(--font-button); font-size: 14px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+.project-cta::after { content: "→"; margin-left: 10px; color: var(--accent); transition: transform .24s var(--ease); }
+.project-cta:hover, .project-cta:focus-visible { color: var(--text-primary); }
+.project-cta:hover::after, .project-cta:focus-visible::after { transform: translateX(4px); }
+
+
+/* Keep the strongest work visible without turning the portfolio into an endless
+   initial scroll. The remaining client work stays one native, accessible reveal. */
+.project-more {
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.project-more > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.project-more > summary::-webkit-details-marker { display: none; }
+.project-more-toggle {
+  margin-top: 18px;
+  user-select: none;
+}
+.project-more[open] .project-more-toggle { margin-bottom: 18px; }
+.project-more-list {
+  display: grid;
+  gap: 18px;
+}
+.project-more-list .project-row:first-child { border-top: 1px solid var(--border); }
+
+/* =========================================================
+   09. EXECUTION SECTION LAYOUT
+========================================================= */
+/* execution-wrap: single column -left content stacks above roadmap */
+.about-grid, .contact-grid { display: grid; grid-template-columns: .92fr 1.08fr; gap: clamp(34px, 6vw, 84px); align-items: start; }
+.execution-wrap { display: grid; grid-template-columns: 1fr; gap: clamp(34px, 6vw, 52px); align-items: start; }
+
+/* tech stack area */
+.tech-cloud { margin-top: 26px; }
+.tech-chip { min-height: 36px; padding: 0 13px; background: rgba(var(--surface-rgb), .70); color: var(--text-primary); font-size: 14px; }
+.capability-ribbon { max-width: 100%; margin-top: 22px; overflow: hidden; border: 1px solid var(--border); background: rgba(var(--surface-rgb), .58); }
+.ribbon-track { display: flex; width: max-content; animation: ribbonMove 24s linear infinite; }
+.ribbon-track span { min-height: 48px; display: inline-flex; align-items: center; flex: 0 0 auto; padding: 0 24px; border-right: 1px solid var(--border); color: var(--text-primary); font-family: var(--font-button); font-size: 14px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+@keyframes ribbonMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* execution-panel: transparent wrapper */
+.execution-panel { border: 0; background: transparent; box-shadow: none; overflow: visible; }
+
+/* =========================================================
+   10. EXECUTION ROADMAP -redesigned, pure CSS layout
+========================================================= */
+
+/* ── wrapper ── */
+.rm-wrap { width: 100%; }
+
+/* ── top / bottom content rows (alternating above/below the rail) ── */
+.rm-row { display: flex; }
+.rm-row-top  { align-items: flex-end; }
+.rm-row-bottom { align-items: flex-start; }
+
+/* 5 equal-width columns, one per step */
+.rm-row > .rm-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.rm-row-top    > .rm-col { justify-content: flex-end; }
+.rm-row-bottom > .rm-col { justify-content: flex-start; }
+
+/* ── stem: thin vertical connector between panel and rail ── */
+.rm-stem {
+  width: 1px;
+  height: 30px;
+  background: currentColor;
+  opacity: 0.40;
+  flex-shrink: 0;
+}
+.rm-row-top    .rm-stem { margin-top: 14px; }
+.rm-row-bottom .rm-stem { margin-bottom: 14px; }
+
+/* ── content panel ── */
+.rm-panel { width: 100%; padding: 0 10px; }
+
+.rm-panel h4 {
+  margin-bottom: 10px;
+  color: currentColor;
+  font-family: var(--font-button);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+.rm-panel ol {
+  margin: 0; padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  counter-reset: rmli;
+}
+
+.rm-panel li {
+  counter-increment: rmli;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.rm-panel li::before {
+  content: counter(rmli) ". ";
+  font-family: var(--font-button);
+  font-size: 12px;
+  font-weight: 700;
+  color: inherit;
+}
+
+/* ── rail: the horizontal bar containing the 5 step nodes ── */
+.rm-rail {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+}
+
+/* gradient bar behind nodes */
+.rm-rail::before {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 50%;
+  height: 13px;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg,
+    var(--sc1)  0%,
+    var(--sc2) 25%,
+    var(--sc3) 50%,
+    var(--sc4) 75%,
+    var(--sc5) 100%
+  );
+  z-index: 0;
+}
+
+/* arrow at the end of the bar */
+.rm-rail::after {
+  content: "";
+  position: absolute;
+  right: calc(6% - 1px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0; height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 18px solid var(--sc5);
+  z-index: 2;
+}
+
+/* ── individual node ── */
+.rm-node {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* inner box masks the bar -only the content area, not full cell width */
+.rm-node-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg);
+  padding: 6px 14px;
+}
+
+.rm-num {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+
+.rm-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid currentColor;
+  flex-shrink: 0;
+}
+.rm-icon-circle  { border-radius: 50%; }
+.rm-icon-dome    { border-radius: 50% 50% 40% 40%; border-bottom-width: 6px; }
+.rm-icon-diamond { width: 14px; height: 14px; transform: rotate(45deg); }
+.rm-icon-square  { border-radius: 2px; }
+.rm-icon-ship    { width: 22px; height: 11px; border: 0; border-bottom: 3px solid currentColor; box-shadow: -6px 6px 0 currentColor, 0 2px 0 currentColor, 6px -4px 0 currentColor; }
+
+.rm-node-inner strong {
+  font-family: var(--font-button);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: currentColor;
+  white-space: nowrap;
+}
+
+/* ── step colour classes (applied to rm-col and rm-node) ── */
+.rm-c1 { color: var(--sc1); }
+.rm-c2 { color: var(--sc2); }
+.rm-c3 { color: var(--sc3); }
+.rm-c4 { color: var(--sc4); }
+.rm-c5 { color: var(--sc5); }
+
+/* ── tablet tweaks ── */
+@media (max-width: 1000px) {
+  .rm-num               { font-size: 20px; }
+  .rm-node-inner        { padding: 5px 10px; }
+  .rm-node-inner strong { font-size: 10px; letter-spacing: .10em; }
+  .rm-panel h4          { font-size: 11px; }
+  .rm-panel li          { font-size: 12px; }
+  .rm-stem              { height: 24px; }
+}
+
+/* ── mobile stepper ── */
+.rm-mobile { display: none; flex-direction: column; }
+
+.rm-m-step  { display: flex; gap: 20px; }
+
+.rm-m-left  {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.rm-m-dot {
+  width: 46px; height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--font-button);
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.rm-m-thread {
+  flex: 1;
+  width: 1px;
+  min-height: 22px;
+  background: var(--border-mid);
+  margin: 7px 0;
+}
+
+.rm-m-step:last-child .rm-m-thread { display: none; }
+
+.rm-m-body { padding-bottom: 32px; }
+.rm-m-step:last-child .rm-m-body { padding-bottom: 0; }
+
+.rm-m-body h4 {
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  margin-bottom: 7px;
+  line-height: 1.1;
+}
+
+.rm-m-body p {
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* =========================================================
+   11. SERVICES / ABOUT / CONTACT
+========================================================= */
+.service-card, .workflow-step { padding: 28px 24px; }
+.service-card { min-height: 330px; display: flex; flex-direction: column; justify-content: space-between; transition: background .25s var(--ease), transform .25s var(--ease); }
+.service-card:hover { background: rgba(var(--surface-rgb), .98); transform: translateY(-3px); }
+.execution-card h4, .service-card h3, .workflow-step h3, .contact-panel h2, .footer-wordmark { color: var(--text-primary); font-family: var(--font-heading); font-weight: 600; letter-spacing: -.025em; }
+.service-card h3, .workflow-step h3 { margin: 18px 0 12px; font-size: 27px; line-height: 1.1; }
+.service-card p, .workflow-step p { color: var(--text-secondary); font-size: 16px; line-height: 1.66; }
+.service-card h3 { margin-top: 24px; }
+.workflow-step { min-height: 240px; }
+.execution-grid, .services-grid, .workflow { display: grid; gap: 1px; background: var(--border); }
+.services-grid { grid-template-columns: repeat(5, minmax(0,1fr)); }
+.workflow { grid-template-columns: repeat(4, minmax(0,1fr)); }
+.execution-card, .service-card, .workflow-step, .contact-panel { background: rgba(var(--surface-rgb), .78); }
+
+.about-card { position: relative; min-height: 520px; align-content: end; padding: 34px; border-color: var(--border-mid); background: rgba(var(--surface-rgb), .76); box-shadow: var(--shadow); }
+.about-card::before { content: ""; position: absolute; inset: 28px; border: 1px solid var(--border); }
+.about-card::after { content: ""; position: absolute; top: -22%; right: -18%; width: 70%; height: 70%; border-radius: 50%; background: radial-gradient(circle, var(--accent-soft), transparent 66%); }
+.proof-strip { position: absolute; top: 30px; left: 30px; right: 30px; z-index: 3; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; border: 1px solid var(--border); background: var(--border); }
+.proof-strip div { padding: 14px; background: rgba(var(--bg-rgb), .32); }
+.proof-strip strong { display: block; color: var(--accent); font-family: var(--font-heading); font-size: 22px; font-weight: 600; line-height: 1; }
+.proof-strip span { display: block; margin-top: 5px; color: var(--text-secondary); font-family: var(--font-button); font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.about-card p { position: relative; z-index: 2; color: var(--text-primary); font-family: var(--font-heading); font-size: clamp(24px, 2.4vw, 34px); font-weight: 500; line-height: 1.28; letter-spacing: -.015em; }
+.about-copy h2 { margin-bottom: 28px; }
+.about-copy p { margin-bottom: 22px; color: var(--text-secondary); font-size: 18px; line-height: 1.78; }
+.about-note { margin-top: 34px; padding-left: 18px; border-left: 2px solid var(--accent-border); color: var(--text-secondary); font-size: 19px; line-height: 1.55; }
+
+.contact-grid { grid-template-columns: 1.04fr .96fr; gap: 1px; }
+.contact-panel { padding: clamp(30px, 5vw, 58px); }
+.contact-panel h2 { max-width: 620px; margin-bottom: 22px; font-size: clamp(34px, 4.2vw, 56px); font-weight: 600; line-height: 1.12; letter-spacing: -.025em; }
+.contact-panel h2 strong { color: var(--accent); }
+.contact-panel p { max-width: 560px; margin-bottom: 36px; color: var(--text-secondary); font-size: 18px; line-height: 1.72; }
+.contact-list { display: grid; gap: 12px; }
+.contact-link { min-height: 60px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 0 18px; border: 1px solid var(--border-mid); background: rgba(var(--bg-rgb), .20); color: var(--text-primary); font-family: var(--font-button); font-size: 15px; font-weight: 600; }
+.contact-link:hover, .contact-link:focus-visible { transform: translateY(-2px); border-color: var(--accent-border); background: var(--accent-soft); }
+.contact-link span { min-width: 0; color: var(--text-secondary); font-weight: 700; overflow-wrap: anywhere; word-break: break-word; text-align: right; }
+
+/* =========================================================
+   12. FOOTER + MOTION
+========================================================= */
+footer { position: relative; z-index: 2; padding: 70px 0 44px; border-top: 1px solid var(--border); }
+.footer-grid { display: grid; grid-template-columns: 1fr auto auto; align-items: start; gap: clamp(34px, 8vw, 120px); margin-bottom: 58px; }
+.footer-wordmark { margin-bottom: 18px; font-size: 30px; line-height: 1; }
+.footer-tagline { max-width: 420px; color: var(--text-secondary); font-size: 16px; line-height: 1.72; }
+.footer-col h4 { margin-bottom: 16px; color: var(--accent); font-family: var(--font-button); font-size: 14px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.footer-col a { display: block; margin-bottom: 10px; color: var(--text-secondary); font-size: 16px; }
+.footer-col a:hover, .footer-col a:focus-visible { color: var(--text-primary); }
+.footer-bottom { display: flex; justify-content: space-between; gap: 24px; padding-top: 28px; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 14px; }
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .76s var(--ease), transform .76s var(--ease); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.delay-1 { transition-delay: .08s; }
+.delay-2 { transition-delay: .16s; }
+.delay-3 { transition-delay: .24s; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; } }
+
+/* =========================================================
+   13. RESPONSIVE
+========================================================= */
+@media (max-width: 1280px) {
+  .container { width: var(--container-w-tablet); max-width: calc(100vw - 36px); }
+}
+
+@media (max-width: 1120px) {
+  .hero-grid { grid-template-columns: 1fr; padding-top: 18px; }
+  .portrait-stage { min-height: 560px; order: -1; }
+  .portrait-frame { height: 540px; }
+  .hero-copy { padding-top: 0; }
+  /* execution-wrap already 1fr, so excluded here */
+  .fit-console, .about-grid, .contact-grid { grid-template-columns: 1fr; }
+  .fit-tabs { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .services-grid, .workflow { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+@media (max-width: 1040px) {
+  .nav-links, .nav-cta { display: none; }
+  .mobile-toggle { display: inline-flex; }
+  .mobile-drawer { display: block; }
+}
+
+@media (max-width: 860px) {
+  .container { width: var(--container-w-mobile); max-width: var(--container-w-mobile); }
+  .site-nav { padding: 18px 0; }
+  .hero { padding-top: 88px; }
+  .hero-grid { min-height: auto; gap: 18px; }
+  .hero h1 { font-size: clamp(44px, 12vw, 68px); }
+  .hero-meta { grid-template-columns: 1fr; margin-top: 42px; }
+  .portrait-stage { min-height: 500px; }
+  .portrait-frame { width: min(400px, 100%); height: 480px; }
+  .scroll-cue { display: none; }
+  .section-header { display: block; }
+  .section-link { margin-top: 26px; }
+  .project-row { grid-template-columns: 1fr; gap: 16px; padding: 32px 0; }
+  .project-row::before { left: 0; }
+  .project-num { display: none; }
+  .project-cta { justify-content: flex-start; }
+  .fit-tabs, .fit-output, .services-grid, .workflow { grid-template-columns: 1fr; }
+  /* roadmap: hide desktop, show mobile stepper */
+  .rm-wrap { display: none; }
+  .rm-mobile { display: flex; }
+  .about-card { min-height: 380px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 34px; }
+  .footer-bottom { flex-direction: column; }
+  .theme-studio { top: 78px; right: 20px; left: 20px; width: auto; }
+  .segmented, .option-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 520px) {
+  body { font-size: 16px; }
+  .hero-actions { align-items: stretch; flex-direction: column; }
+  .btn-primary, .btn-ghost { width: 100%; }
+  .portrait-stage { min-height: 430px; }
+  .portrait-frame { height: 420px; }
+  .portrait-status { top: 14px; right: 14px; max-width: calc(100% - 28px); font-size: 12px; }
+  .studio-body { padding: 18px; }
+  .studio-head { padding: 20px 18px 16px; }
+  .hero-meta { display: none; }
+  .proof-strip { left: 18px; right: 18px; top: 18px; }
+  .contact-link { align-items: flex-start; flex-direction: column; justify-content: center; padding: 16px; }
+  .contact-link span { text-align: left; }
+
+  .wordmark-logo {
+    height: 44px;
+    max-width: 145px;
+  }
+}
+
+/* =========================================================
+   14. LIQUID GLASS CONTROL LAYER
+   Apple-inspired Regular material, reserved for navigation,
+   controls, contextual actions, and timeline markers.
+========================================================= */
+:root {
+  --glass-fill: rgba(24, 24, 27, .38);
+  --glass-fill-strong: rgba(28, 28, 31, .54);
+  --glass-edge: rgba(255, 255, 255, .12);
+  --glass-edge-strong: rgba(255, 255, 255, .22);
+  --glass-highlight: rgba(255, 255, 255, .20);
+  --glass-shadow: 0 18px 54px rgba(0, 0, 0, .28), 0 2px 8px rgba(0, 0, 0, .20);
+  --glass-shadow-soft: 0 10px 30px rgba(0, 0, 0, .19);
+  --glass-radius: 999px;
+  --glass-panel-radius: 30px;
+  --glass-control-radius: 18px;
+  --glass-transition: cubic-bezier(.20, .90, .25, 1.22);
+}
+
+html[data-theme="light"] {
+  --glass-fill: rgba(255, 255, 255, .46);
+  --glass-fill-strong: rgba(255, 255, 255, .64);
+  --glass-edge: rgba(255, 255, 255, .72);
+  --glass-edge-strong: rgba(255, 255, 255, .92);
+  --glass-highlight: rgba(255, 255, 255, .94);
+  --glass-shadow: 0 20px 56px rgba(74, 55, 33, .16), 0 2px 9px rgba(74, 55, 33, .10);
+  --glass-shadow-soft: 0 10px 30px rgba(74, 55, 33, .12);
+}
+
+/* Give ordinary glass hosts a positioning context without overriding
+   components that are intentionally fixed/absolute (studio, drawer, status). */
+:where([data-liquid-group-host]) {
+  position: relative;
+  isolation: isolate;
+}
+
+:where([data-liquid-glass]) {
+  position: relative;
+}
+
+[data-liquid-glass] {
+  --glass-x: 50%;
+  --glass-y: 0%;
+  isolation: isolate;
+  border: 1px solid transparent;
+  background:
+    radial-gradient(ellipse 72% 92% at var(--glass-x) var(--glass-y), var(--glass-highlight), transparent 52%),
+    linear-gradient(145deg, rgba(255,255,255,.085), transparent 38%, rgba(0,0,0,.035) 74%, rgba(255,255,255,.045)),
+    var(--glass-fill);
+  box-shadow:
+    inset 0 1px .7px rgba(255,255,255,.32),
+    inset 0 -1px .8px rgba(0,0,0,.18),
+    0 0 0 .65px var(--glass-edge),
+    var(--glass-shadow-soft);
+  -webkit-backdrop-filter: saturate(1.34) blur(18px);
+  backdrop-filter: saturate(1.34) blur(18px);
+  transform-origin: center;
+  transition:
+    transform .34s var(--glass-transition),
+    border-color .28s var(--ease),
+    background .28s var(--ease),
+    box-shadow .28s var(--ease),
+    color .20s var(--ease);
+}
+
+[data-liquid-glass][data-liquid-tint="1"] {
+  border-color: transparent;
+  background:
+    radial-gradient(ellipse 70% 94% at var(--glass-x) var(--glass-y), rgba(255,255,255,.28), transparent 50%),
+    linear-gradient(145deg, rgba(255,255,255,.13), transparent 44%, rgba(0,0,0,.08)),
+    rgba(var(--accent-rgb), .74);
+  color: var(--button-text);
+}
+
+[data-liquid-glass]:where(:hover, :focus-visible) {
+  border-color: transparent;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.40),
+    inset 0 -1px 1px rgba(0,0,0,.19),
+    0 0 0 .7px var(--glass-edge-strong),
+    var(--glass-shadow);
+}
+
+[data-liquid-glass]:active {
+  transform: translateY(1px) scale(.972);
+  transition-duration: .10s;
+}
+
+.liquid-surface-canvas {
+  position: absolute;
+  z-index: -1;
+  display: block;
+  max-width: none;
+  pointer-events: none;
+}
+
+html.liquid-glass-ready [data-liquid-glass][data-liquid-rendered="1"] {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html.liquid-glass-ready [data-liquid-glass][data-liquid-rendered="1"]:where(:hover, :focus-visible),
+html.liquid-glass-ready [data-liquid-glass][data-liquid-rendered="1"][data-liquid-tint="1"] {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+:where(a, button, summary):focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 78%, white 22%);
+  outline-offset: 4px;
+}
+
+/* Navigation is one floating Regular surface; its children are fills. */
+.site-nav,
+.site-nav.scrolled {
+  padding: 18px 0;
+  border: 0;
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.site-nav.scrolled { padding: 11px 0; }
+
+.nav-inner {
+  min-height: 76px;
+  padding: 10px 12px 10px 20px;
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow);
+}
+
+.site-nav.scrolled .nav-inner { min-height: 64px; }
+.site-nav.scrolled .wordmark-logo { height: 44px; }
+
+.nav-links {
+  flex: 0 1 auto;
+  padding: 5px;
+  border-radius: var(--glass-radius);
+  background: rgba(var(--surface-rgb), .16);
+}
+
+.nav-links a {
+  position: relative;
+  padding: 9px 13px;
+  border-radius: var(--glass-radius);
+  color: var(--text-secondary);
+}
+
+.nav-links a.active,
+.nav-links a[aria-current="true"] {
+  color: var(--text-primary);
+  background: rgba(var(--accent-rgb), .13);
+  box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), .20);
+}
+
+.nav-actions { gap: 8px; }
+
+.nav-cta,
+.icon-btn,
+.mobile-toggle {
+  min-height: 44px;
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: var(--glass-radius);
+  background: rgba(var(--surface-rgb), .24);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-theme="light"] .icon-btn,
+html[data-theme="light"] .mobile-toggle {
+  border-color: rgba(20,18,15,.08);
+  background: rgba(255,255,255,.34);
+}
+
+.nav-cta {
+  padding-inline: 21px;
+  border-color: rgba(var(--accent-rgb), .34);
+  background: rgba(var(--accent-rgb), .15);
+  color: #000000;
+  -webkit-text-fill-color: #000000;
+}
+
+.nav-cta:hover,
+.nav-cta:focus-visible,
+.icon-btn:hover,
+.icon-btn:focus-visible,
+.mobile-toggle:hover,
+.mobile-toggle:focus-visible {
+  border-color: rgba(var(--accent-rgb), .40);
+  background: rgba(var(--accent-rgb), .16);
+  transform: scale(1.035);
+}
+
+.icon-btn,
+.mobile-toggle { width: 44px; }
+
+.mobile-drawer {
+  top: 108px;
+  left: max(20px, calc((100vw - var(--container-w-tablet)) / 2));
+  right: max(20px, calc((100vw - var(--container-w-tablet)) / 2));
+  padding: 12px;
+  border-radius: 28px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.08), transparent 45%),
+    var(--glass-fill-strong);
+  box-shadow: var(--glass-shadow);
+  transform: translateY(-10px) scale(.985);
+}
+
+.mobile-drawer.open { transform: translateY(0) scale(1); }
+
+.mobile-drawer a {
+  padding: 15px 16px;
+  border: 0;
+  border-radius: 16px;
+}
+
+.mobile-drawer a + a { margin-top: 2px; }
+.mobile-drawer a:hover,
+.mobile-drawer a:focus-visible,
+.mobile-drawer a.active {
+  color: var(--text-primary);
+  background: rgba(var(--accent-rgb), .13);
+}
+
+.mobile-drawer a.active::after {
+  content: "";
+  float: right;
+  width: 7px;
+  height: 7px;
+  margin-top: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 15px rgba(var(--accent-rgb), .68);
+}
+
+/* Theme Studio is one separate surface below the header. */
+.theme-studio {
+  top: 112px;
+  right: 28px;
+  overflow: visible;
+  border-radius: var(--glass-panel-radius);
+  background:
+    linear-gradient(140deg, rgba(255,255,255,.075), transparent 38%),
+    var(--glass-fill-strong);
+  box-shadow: var(--glass-shadow);
+  transform: translateY(-12px) scale(.965);
+  transform-origin: 86% 0;
+}
+
+.theme-studio.open { transform: translateY(0) scale(1); }
+
+.studio-head {
+  padding: 24px 24px 19px;
+  border-bottom-color: rgba(255,255,255,.10);
+}
+
+html[data-theme="light"] .studio-head { border-bottom-color: rgba(20,18,15,.09); }
+
+.studio-body {
+  max-height: calc(100svh - 214px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 22px 24px 26px;
+  scrollbar-width: thin;
+}
+
+.studio-close {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(var(--surface-rgb), .24);
+  transition: transform .24s var(--glass-transition), background .2s var(--ease);
+}
+
+.studio-close:hover,
+.studio-close:focus-visible {
+  background: rgba(var(--accent-rgb), .14);
+  transform: rotate(7deg) scale(1.05);
+}
+
+.segmented {
+  gap: 3px;
+  padding: 4px;
+  border-color: var(--border);
+  border-radius: 18px;
+  background: rgba(var(--bg-rgb), .22);
+}
+
+.segment { border-radius: 14px; }
+.segment.active { box-shadow: 0 7px 20px rgba(var(--accent-rgb), .19); }
+
+.option {
+  border-radius: 16px;
+  background: rgba(var(--bg-rgb), .12);
+  transition: transform .22s var(--ease), background .22s var(--ease), border-color .22s var(--ease);
+}
+
+.option:hover,
+.option:focus-visible { transform: translateY(-1px); }
+.swatch { border-radius: 14px; }
+.swatch.active::after { border-radius: 8px; }
+
+/* Hero: content stays content; actions and status carry the material. */
+.hero::before {
+  background:
+    radial-gradient(ellipse 46% 55% at 74% 43%, rgba(var(--accent-rgb), .105), transparent 64%),
+    radial-gradient(ellipse 30% 34% at 18% 24%, rgba(255,255,255,.025), transparent 68%),
+    linear-gradient(90deg, rgba(var(--bg-rgb), 1) 0%, rgba(var(--bg-rgb), .93) 54%, rgba(var(--bg-rgb), 1) 100%);
+}
+
+.hero-grain { opacity: .012; }
+.hero-orb { display: none; }
+.portrait-frame::after { display: none; }
+
+.hero-actions { overflow: visible; }
+
+.btn-primary,
+.btn-ghost {
+  min-height: 54px;
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow-soft);
+}
+
+.btn-primary:hover,
+.btn-ghost:hover,
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible { transform: translateY(-1px) scale(1.018); }
+
+.portrait-frame {
+  border-radius: 26px;
+  border-color: var(--border-mid);
+}
+
+.portrait-status {
+  min-height: 42px;
+  padding-inline: 15px;
+  border-radius: var(--glass-radius);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.08), transparent 46%),
+    var(--glass-fill-strong);
+  box-shadow: var(--glass-shadow-soft);
+}
+
+/* Build Direction: one glass selector rail; display remains solid content. */
+.fit-console {
+  gap: 16px;
+  padding: 16px;
+  border-radius: 32px;
+  border-color: var(--border);
+  background: rgba(var(--surface-rgb), .54);
+  box-shadow: 0 22px 68px rgba(0,0,0,.17);
+  overflow: visible;
+}
+
+.fit-tabs {
+  gap: 4px;
+  padding: 9px;
+  border-radius: 25px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.06), transparent 45%),
+    var(--glass-fill);
+  box-shadow: var(--glass-shadow-soft);
+  align-content: start;
+}
+
+.fit-tab {
+  min-height: 82px;
+  padding: 15px 16px;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  background: transparent;
+  transition: transform .26s var(--glass-transition), background .22s var(--ease), border-color .22s var(--ease);
+}
+
+.fit-tab:hover,
+.fit-tab:focus-visible { transform: translateX(2px); }
+
+.fit-tab.active {
+  border-color: rgba(var(--accent-rgb), .32);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,.11), transparent 52%),
+    rgba(var(--accent-rgb), .14);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 8px 24px rgba(var(--accent-rgb), .10);
+}
+
+.fit-display {
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(var(--surface-rgb), .78);
+}
+
+.fit-output { border-radius: 16px; overflow: hidden; }
+
+/* Project rows remain uncoated; only contextual actions refract. */
+.section-link {
+  min-height: 48px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--glass-edge);
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow-soft);
+}
+
+.project-cta {
+  min-height: 44px;
+  justify-content: center;
+  padding: 0 17px;
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow-soft);
+}
+
+.project-links > div {
+  position: relative;
+  z-index: 8;
+}
+
+.tag,
+.tech-chip { border-radius: 10px; }
+.capability-ribbon { border-radius: 14px; }
+
+/* Execution stage markers are the only material in the roadmap. */
+.rm-node-inner {
+  width: 86px;
+  min-height: 98px;
+  justify-content: center;
+  padding: 11px 12px;
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.06), transparent 52%),
+    var(--glass-fill);
+  color: currentColor;
+  box-shadow: var(--glass-shadow-soft);
+}
+
+.rm-rail > .liquid-surface-canvas,
+.rm-mobile > .liquid-surface-canvas { z-index: 1; }
+
+.rm-rail .rm-node,
+.rm-mobile .rm-m-step {
+  position: relative;
+  z-index: 2;
+}
+
+.rm-node-inner.is-selected {
+  transform: translateY(-5px) scale(1.04);
+  box-shadow: 0 18px 44px rgba(var(--accent-rgb), .21);
+}
+
+.rm-node-inner.is-selected strong,
+.rm-node-inner.is-selected .rm-num { color: var(--text-primary); }
+
+.rm-m-dot {
+  width: 50px;
+  height: 50px;
+  border-radius: 17px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.07), transparent 52%),
+    var(--glass-fill);
+  box-shadow: var(--glass-shadow-soft);
+}
+
+.rm-m-dot.is-selected {
+  color: var(--button-text);
+  transform: scale(1.06);
+}
+
+.rm-m-step:has(.rm-m-dot.is-selected) .rm-m-body h4 { color: var(--accent); }
+
+/* Service cards, About, and Contact remain the content layer. */
+.services-grid,
+.about-card,
+.contact-grid { border-radius: 28px; }
+
+.services-grid { overflow: hidden; }
+.services-grid > .liquid-surface-canvas,
+.contact-list > .liquid-surface-canvas { z-index: 2; }
+
+.service-card { position: relative; padding-right: 76px; }
+
+.service-card.is-featured {
+  background: color-mix(in srgb, rgba(var(--surface-rgb), .92) 90%, rgba(var(--accent-rgb), .22) 10%);
+}
+
+.service-action {
+  position: absolute;
+  top: 22px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text-primary);
+  font-family: var(--font-button);
+  font-size: 19px;
+  font-weight: 700;
+  z-index: 3;
+}
+
+.service-action:hover,
+.service-action:focus-visible { transform: translate(2px, -2px) scale(1.04); }
+
+.about-actions { margin-top: 30px; }
+.about-actions .btn-cv { width: max-content; }
+
+.contact-link {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(100px, .42fr) minmax(0, 1fr) 42px;
+  border-radius: 16px;
+  background: rgba(var(--bg-rgb), .16);
+  transition: transform .24s var(--ease), border-color .24s var(--ease), background .24s var(--ease);
+}
+
+.contact-link > span:not(.contact-arrow) { text-align: right; }
+
+.contact-arrow {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  color: var(--accent);
+  font-size: 16px;
+  text-align: center;
+  z-index: 3;
+}
+
+.contact-link:hover .contact-arrow,
+.contact-link:focus-visible .contact-arrow { transform: translateX(2px); }
+
+footer { overflow: visible; }
+
+.back-to-top {
+  position: absolute;
+  right: max(24px, calc((100vw - var(--container-w)) / 2 - 74px));
+  bottom: 34px;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text-primary);
+  font-family: var(--font-button);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.back-to-top:hover,
+.back-to-top:focus-visible { transform: translateY(-3px) scale(1.03); }
+
+/* Theme-aware accessibility fallbacks. */
+@media (prefers-reduced-transparency: reduce) {
+  [data-liquid-glass],
+  [data-liquid-glass][data-liquid-tint="1"],
+  .theme-studio,
+  .mobile-drawer,
+  .fit-tabs,
+  .portrait-status,
+  .rm-node-inner,
+  .rm-m-dot {
+    background: var(--surface-raised);
+    border-color: var(--border-mid);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  [data-liquid-glass][data-liquid-tint="1"] {
+    background: var(--accent);
+    color: var(--button-text);
+  }
+}
+
+@media (prefers-contrast: more) {
+  [data-liquid-glass] { border-width: 2px; border-color: currentColor; }
+  .nav-links a,
+  .mobile-drawer a,
+  .fit-tab { color: var(--text-primary); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-grain { display: none; }
+  [data-liquid-glass]:active { transform: none; }
+}
+
+@media (max-width: 1120px) {
+  .fit-console { gap: 12px; }
+  .fit-tabs { border-radius: 22px; }
+}
+
+@media (max-width: 1040px) {
+  .nav-inner { padding-left: 16px; }
+}
+
+@media (max-width: 860px) {
+  .site-nav,
+  .site-nav.scrolled { padding: 12px 0; }
+
+  .nav-inner,
+  .site-nav.scrolled .nav-inner {
+    min-height: 68px;
+    padding: 7px 8px 7px 13px;
+  }
+
+  .wordmark-logo,
+  .site-nav.scrolled .wordmark-logo { height: 46px; }
+
+  .mobile-drawer {
+    top: 96px;
+    left: 20px;
+    right: 20px;
+  }
+
+  .theme-studio {
+    top: 96px;
+    right: 20px;
+    left: 20px;
+    border-radius: 28px;
+  }
+
+  .studio-body { max-height: calc(100svh - 198px); }
+  .segmented { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .option-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .fit-console {
+    padding: 10px;
+    border-radius: 26px;
+  }
+
+  .fit-tabs { grid-template-columns: 1fr; }
+
+  .project-cta {
+    width: max-content;
+    justify-content: flex-start;
+  }
+
+  .service-card { min-height: 280px; }
+  .back-to-top { right: 20px; }
+}
+
+@media (max-width: 520px) {
+  .nav-actions { gap: 6px; }
+  .icon-btn,
+  .mobile-toggle { width: 40px; min-height: 40px; }
+
+  .mobile-drawer { top: 92px; }
+  .theme-studio { top: 92px; }
+
+  .btn-primary,
+  .btn-ghost { border-radius: 18px; }
+
+  .hero-actions[data-liquid-group-host] { gap: 12px; }
+  .portrait-frame { border-radius: 22px; }
+  .portrait-status { white-space: normal; text-wrap: balance; }
+
+  .section-link { width: max-content; max-width: 100%; }
+  .project-cta { width: max-content; max-width: 100%; justify-content: center; }
+
+  .service-card { min-height: 250px; padding-right: 70px; }
+
+  .about-actions .btn-cv { width: 100%; }
+
+  .contact-link {
+    grid-template-columns: 1fr 40px;
+    gap: 6px 12px;
+    padding: 15px 14px;
+  }
+
+  .contact-link strong { grid-column: 1; }
+  .contact-link > span:not(.contact-arrow) {
+    grid-column: 1;
+    text-align: left;
+  }
+  .contact-arrow { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+
+  .back-to-top {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    margin: 26px 20px 0 auto;
+  }
+}
+
+/* =========================================================
+   15. LIQUID GLASS REFINEMENT + LAYOUT CORRECTIONS
+========================================================= */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+main,
+.hero,
+.hero .container,
+.hero-grid,
+.hero-copy,
+.portrait-stage {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Keep the hero anchored. Optical movement now lives in the light field and
+   portrait plane, never in either layout column. */
+.hero {
+  --hero-light-x: 78%;
+  --hero-light-y: 42%;
+  display: block;
+  min-height: 100svh;
+  padding: clamp(126px, 14vh, 158px) 0 clamp(72px, 8vh, 96px);
+  overflow: hidden;
+}
+
+.hero::before {
+  background:
+    radial-gradient(ellipse 55% 70% at var(--hero-light-x) var(--hero-light-y), rgba(var(--accent-rgb), .11), transparent 58%),
+    linear-gradient(90deg, rgba(var(--bg-rgb), 1) 0%, rgba(var(--bg-rgb), .89) 53%, rgba(var(--bg-rgb), 1) 100%);
+}
+
+.hero-grid {
+  /* Keep the normal .container width so the hero aligns with the nav/sections. */
+  min-height: 0;
+  padding-top: 0;
+  align-items: center;
+  overflow: visible;
+}
+
+.hero-copy,
+.portrait-stage {
+  transform: none;
+  will-change: auto;
+}
+
+.hero-copy { padding: 0; }
+.hero-copy > * { max-width: 100%; }
+.portrait-frame { will-change: transform; transform-origin: center; }
+
+/* Project rows are content. Their actions are intentionally plain links. */
+.project-cta,
+.project-cta[data-liquid-glass] {
+  min-height: 44px;
+  width: max-content;
+  max-width: 100%;
+  justify-content: flex-start;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  transform: none;
+}
+
+.project-cta:hover,
+.project-cta:focus-visible,
+.project-cta:active {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Once WebGL is ready, remove every CSS coating that would sit between the
+   actual refractive material and the environment behind it. */
+html.liquid-glass-ready [data-liquid-glass][data-liquid-rendered="1"],
+html.liquid-glass-ready [data-liquid-glass][data-liquid-rendered="1"]:where(:hover, :focus-visible, :active),
+html.liquid-glass-ready [data-liquid-glass][data-liquid-rendered="1"][data-liquid-tint="1"] {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.liquid-surface-canvas {
+  contain: strict;
+  transform: translateZ(0);
+}
+
+@media (max-width: 1120px) {
+  .hero {
+    min-height: 0;
+    padding: 118px 0 82px;
+  }
+
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 54px;
+  }
+
+  .hero-copy { order: 0; }
+  .portrait-stage {
+    order: 1;
+    min-height: 560px;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero { padding: 108px 0 72px; }
+  .hero-grid { gap: 38px; }
+  .portrait-stage { min-height: 500px; }
+
+  .theme-studio,
+  .mobile-drawer {
+    max-width: calc(100vw - 40px);
+  }
+}
+
+@media (max-width: 520px) {
+  .hero { padding: 100px 0 64px; }
+  .hero-grid { gap: 30px; }
+  .hero h1 {
+    max-width: 100%;
+    font-size: clamp(42px, 13vw, 58px);
+    letter-spacing: -.045em;
+  }
+  .hero-sub { max-width: 100%; }
+  .hero-actions { width: 100%; }
+  .portrait-stage { min-height: 430px; }
+}
+
+/* =========================================================
+   16. TARGETED LAYOUT / MOBILE CONTROL FIXES — 2026-08-14
+   Keeps the visual system intact; fixes ordering, hit targets,
+   Build Direction containment, and Theme Studio alignment.
+========================================================= */
+
+/* Large Liquid Glass hosts should deform optically, not physically shrink.
+   Scaling a whole selector/panel under a finger can move the hit target and
+   make a valid tap miss on touch devices. */
+.fit-tabs[data-liquid-glass]:active,
+.theme-studio[data-liquid-glass]:active,
+.mobile-drawer[data-liquid-glass]:active,
+.nav-inner[data-liquid-glass]:active {
+  transform: none;
+}
+
+.theme-studio.open[data-liquid-glass]:active {
+  transform: translateY(0) scale(1);
+}
+
+/* ---------------- Build Direction ---------------- */
+.fit-console {
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.fit-tabs {
+  /* An explicit minmax(0,1fr) track prevents long labels/descriptions from
+     creating an intrinsic-width grid track that bleeds into the display. */
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: max-content;
+  align-content: start;
+  align-items: start;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+.fit-tabs > .liquid-surface-canvas {
+  z-index: 0;
+  pointer-events: none;
+}
+
+.fit-tab {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.fit-tab strong,
+.fit-tab span {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* Remove the oversized inset before the right-hand content while keeping
+   enough breathing room for the content hierarchy. */
+.fit-display {
+  min-width: 0;
+  padding: clamp(24px, 2.6vw, 40px);
+}
+
+/* ---------------- Theme Studio ---------------- */
+.theme-studio {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.theme-studio > .liquid-surface-canvas {
+  z-index: 0;
+  pointer-events: none;
+}
+
+.studio-head,
+.studio-body {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-width: 0;
+}
+
+.studio-head {
+  flex: 0 0 auto;
+}
+
+.studio-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  align-content: start;
+  grid-auto-rows: max-content;
+  scrollbar-gutter: stable;
+}
+
+.studio-group,
+.segmented,
+.option-grid,
+.swatches {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Pin controls to their intended cells. This also makes the layout immune to
+   any renderer/helper node being injected into a grid container. */
+.segmented {
+  position: relative;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto;
+  grid-auto-flow: row;
+  align-items: stretch;
+}
+
+.segmented > .segment:nth-of-type(1) { grid-column: 1; grid-row: 1; }
+.segmented > .segment:nth-of-type(2) { grid-column: 2; grid-row: 1; }
+.segmented > .segment:nth-of-type(3) { grid-column: 3; grid-row: 1; }
+
+.option-grid {
+  position: relative;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-flow: row;
+  align-items: stretch;
+}
+
+.option-grid > .option:nth-of-type(1) { grid-column: 1; grid-row: 1; }
+.option-grid > .option:nth-of-type(2) { grid-column: 2; grid-row: 1; }
+.option-grid > .option:nth-of-type(3) { grid-column: 1; grid-row: 2; }
+.option-grid > .option:nth-of-type(4) { grid-column: 2; grid-row: 2; }
+
+/* Renderer/helper nodes must never consume a Theme Studio grid cell. */
+.segmented > :not(.segment),
+.option-grid > :not(.option) {
+  position: absolute;
+  inset: auto;
+  pointer-events: none;
+}
+
+.segment,
+.option,
+.swatch {
+  min-width: 0;
+  max-width: 100%;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 1120px) {
+  /* Image first on the stacked hero. */
+  .portrait-stage {
+    order: -1;
+  }
+
+  .hero-copy {
+    order: 1;
+  }
+
+  .fit-console {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fit-tabs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 860px) {
+  .theme-studio {
+    max-height: calc(100dvh - 116px);
+  }
+
+  .studio-body {
+    padding: 20px;
+  }
+
+  .fit-display {
+    padding: 24px 20px;
+  }
+}
+
+@media (max-width: 520px) {
+  .theme-studio {
+    max-height: calc(100dvh - 108px);
+  }
+
+  .studio-head {
+    padding: 20px 18px 16px;
+  }
+
+  .studio-body {
+    padding: 18px;
+    gap: 20px;
+  }
+
+  .segmented {
+    gap: 3px;
+  }
+
+  .segment {
+    min-height: 46px;
+    padding-inline: 6px;
+    font-size: 12px;
+  }
+
+  .option-grid {
+    gap: 8px;
+  }
+
+  .option {
+    min-height: 84px;
+    padding: 13px 12px;
+  }
+}
+
+/* =========================================================
+   17. LIQUID GLASS OPTICAL + MORPH REFINEMENT — 2026-08-14
+   Adds fill morphing on top of glass, adaptive foreground ink,
+   and lets WebGL own the physical press response.
+========================================================= */
+
+/* Content placed on Regular Liquid Glass adapts independently from the
+   material. Large surfaces keep their continuous variable-based treatment. */
+html.liquid-glass-ready [data-liquid-adaptive-ink="1"] {
+  color: var(--liquid-ink, currentColor);
+  transition: color .18s var(--ease);
+}
+
+html.liquid-glass-ready .rm-node-inner[data-liquid-adaptive-ink="1"] strong,
+html.liquid-glass-ready .rm-node-inner[data-liquid-adaptive-ink="1"] .rm-num,
+html.liquid-glass-ready .rm-m-dot[data-liquid-adaptive-ink="1"] {
+  color: var(--liquid-ink, currentColor);
+}
+
+/* Navigation selection is a thin translucent fill living inside the single
+   navigation glass plane. It is not a second glass layer. */
+.nav-links {
+  position: relative;
+  isolation: isolate;
+}
+
+.nav-active-fill {
+  --nav-fill-x: 0px;
+  --nav-fill-y: 0px;
+  --nav-fill-w: 0px;
+  --nav-fill-h: 0px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  width: var(--nav-fill-w);
+  height: var(--nav-fill-h);
+  border: 1px solid rgba(var(--accent-rgb), .20);
+  border-radius: var(--glass-radius);
+  background:
+    radial-gradient(circle at 24% 0%, rgba(255,255,255,.10), transparent 56%),
+    rgba(var(--accent-rgb), .12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07);
+  opacity: 0;
+  transform: translate3d(var(--nav-fill-x), var(--nav-fill-y), 0) scale(.92);
+  transform-origin: center;
+  pointer-events: none;
+  transition:
+    transform .42s cubic-bezier(.18,.82,.20,1),
+    width .42s cubic-bezier(.18,.82,.20,1),
+    height .42s cubic-bezier(.18,.82,.20,1),
+    opacity .16s var(--ease);
+  will-change: transform, width, height;
+}
+
+.nav-active-fill.is-visible {
+  opacity: 1;
+  transform: translate3d(var(--nav-fill-x), var(--nav-fill-y), 0) scale(1);
+}
+
+.nav-links a {
+  z-index: 1;
+}
+
+.nav-links a.active,
+.nav-links a[aria-current="true"] {
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Build Direction uses the same rule: one glass selector surface with a
+   translucent selection fill that physically travels between choices. */
+.fit-active-fill {
+  --fit-fill-x: 0px;
+  --fit-fill-y: 0px;
+  --fit-fill-w: 0px;
+  --fit-fill-h: 0px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: var(--fit-fill-w);
+  height: var(--fit-fill-h);
+  border: 1px solid rgba(var(--accent-rgb), .30);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,.105), transparent 54%),
+    rgba(var(--accent-rgb), .135);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.075),
+    0 8px 24px rgba(var(--accent-rgb), .09);
+  opacity: 0;
+  transform: translate3d(var(--fit-fill-x), var(--fit-fill-y), 0) scale(.96);
+  transform-origin: center;
+  pointer-events: none;
+  transition:
+    transform .46s cubic-bezier(.18,.82,.20,1),
+    width .46s cubic-bezier(.18,.82,.20,1),
+    height .46s cubic-bezier(.18,.82,.20,1),
+    opacity .18s var(--ease);
+  will-change: transform, width, height;
+}
+
+.fit-active-fill.is-visible {
+  opacity: 1;
+  transform: translate3d(var(--fit-fill-x), var(--fit-fill-y), 0) scale(1);
+}
+
+.fit-tab {
+  z-index: 2;
+}
+
+.fit-tab.active {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* With the WebGL material active, press feedback comes predominantly from
+   local lens deformation. The DOM only compresses enough to communicate touch. */
+html.liquid-glass-ready [data-liquid-glass][data-liquid-rendered="1"]:active {
+  transform: translateY(.5px) scale(.988);
+  transition-duration: .075s;
+}
+
+html.liquid-glass-ready .rm-node-inner.is-selected[data-liquid-rendered="1"]:active {
+  transform: translateY(-4px) scale(1.025);
+}
+
+html.liquid-glass-ready :is(
+  .fit-tabs,
+  .theme-studio,
+  .mobile-drawer,
+  .nav-inner
+)[data-liquid-rendered="1"]:active {
+  transform: none;
+}
+
+html.liquid-glass-ready .theme-studio.open[data-liquid-rendered="1"]:active {
+  transform: translateY(0) scale(1);
+}
+
+/* Keep helper layers outside layout and interaction calculations. */
+.nav-active-fill,
+.fit-active-fill,
+.liquid-surface-canvas {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-active-fill,
+  .fit-active-fill {
+    transition: opacity .01s linear;
+  }
+
+  html.liquid-glass-ready [data-liquid-glass][data-liquid-rendered="1"]:active,
+  html.liquid-glass-ready .rm-node-inner.is-selected[data-liquid-rendered="1"]:active {
+    transform: none;
+  }
+}
+
+/* =========================================================
+   18. LIQUID GLASS RUNTIME CORRECTIONS — WEBGL2 VERIFIED PATH
+   The active selector is rendered optically by the WebGL material. CSS fills
+   remain available only as a fallback when WebGL is unavailable.
+========================================================= */
+html.liquid-glass-ready .nav-active-fill,
+html.liquid-glass-ready .fit-active-fill {
+  opacity: 0;
+  visibility: hidden;
+  transition: none;
+}
+
+/* Panels now grow out of a compact material seed instead of entering as a
+   translated card. The glass renderer is clipped with the same geometry, so
+   the material itself appears to expand/contract with the panel. */
+.theme-studio {
+  transform: none;
+  clip-path: circle(28px at var(--liquid-origin-x, calc(100% - 28px)) 0px);
+  transform-origin: 100% 0;
+  transition:
+    opacity .18s ease-out,
+    clip-path .46s cubic-bezier(.16,.86,.22,1),
+    border-radius .46s cubic-bezier(.16,.86,.22,1);
+}
+
+.theme-studio.open,
+.theme-studio.open[data-liquid-glass],
+.theme-studio.open[data-liquid-rendered="1"] {
+  transform: none;
+  clip-path: circle(1200px at var(--liquid-origin-x, calc(100% - 28px)) 0px);
+}
+
+.mobile-drawer {
+  transform: none;
+  clip-path: circle(26px at var(--liquid-origin-x, calc(100% - 26px)) 0px);
+  transform-origin: 100% 0;
+  transition:
+    opacity .16s ease-out,
+    clip-path .42s cubic-bezier(.16,.86,.22,1);
+}
+
+.mobile-drawer.open,
+.mobile-drawer.open[data-liquid-glass],
+.mobile-drawer.open[data-liquid-rendered="1"] {
+  transform: none;
+  clip-path: circle(1200px at var(--liquid-origin-x, calc(100% - 26px)) 0px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-studio,
+  .mobile-drawer {
+    clip-path: none;
+    transition: opacity .01s linear;
+  }
+}
+
+
+
+
+/* =========================================================
+   19. AUTHORITATIVE LIQUID GLASS REBUILD — 2026-08-14
+   Single-source rules. WebGL owns every element marked data-liquid-glass.
+   Branded gold actions are deliberately not glass and are the only exception.
+========================================================= */
+
+/* WebGL surfaces must never be covered by a CSS fill once the renderer is ready. */
+html.liquid-glass-ready [data-liquid-glass][data-liquid-rendered="1"] {
+  background: transparent;
+  background-image: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+/* Never dim the actual GPU canvas. Earlier passes did this and made the WebGL
+   material visually disappear. */
+html.liquid-glass-ready .liquid-surface-canvas {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Canonical branded action. Start Project / Request Details / Hire Ray / Email Ray
+   share this exact non-glass component. */
+html body .brand-gold-action,
+html body .brand-gold-action:hover,
+html body .brand-gold-action:focus-visible {
+  min-height: 48px;
+  width: max-content;
+  max-width: 100%;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px solid rgba(var(--accent-rgb), .70);
+  border-radius: 24px;
+  background: var(--accent);
+  color: #000000;
+  -webkit-text-fill-color: #000000;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.19);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  font-family: var(--font-button);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+html body .brand-gold-action:hover,
+html body .brand-gold-action:focus-visible { filter: brightness(1.035); transform: translateY(-1px); }
+html body .brand-gold-action:active { transform: translateY(1px) scale(.985); }
+html body .brand-gold-action svg,
+html body .brand-gold-action path { color: currentColor; stroke: currentColor; }
+
+/* NAV: one WebGL surface only. No second capsule around the links. */
+html body .nav-inner {
+  background: transparent;
+  border-radius: var(--glass-radius);
+  border: 1px solid rgba(var(--border-rgb), .16);
+  box-shadow: none;
+}
+html body .nav-links {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+}
+html body .nav-links a,
+html body .nav-links a.active,
+html body .nav-links a[aria-current="true"] {
+  background: transparent;
+  box-shadow: none;
+}
+html.liquid-glass-ready body .nav-inner[data-liquid-rendered="1"] {
+  border-color: rgba(var(--border-rgb), .12);
+}
+/* Header icons are normal child controls on top of the parent WebGL surface. */
+html body .icon-btn,
+html body .mobile-toggle {
+  background: rgba(var(--surface-rgb), .42);
+  border: 1px solid rgba(var(--border-rgb), .34);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-theme="light"] body .icon-btn,
+html[data-theme="light"] body .mobile-toggle {
+  background: rgba(255,255,255,.48);
+  color: rgb(18 18 17);
+}
+
+/* Theme Studio and Technical Role are literally the same panel material at the
+   CSS layer; the renderer also gives their groups the exact same preset. */
+html body .liquid-panel-surface,
+html body .theme-studio,
+html body .fit-tabs {
+  background: transparent;
+  border: 1px solid rgba(var(--border-rgb), .18);
+  box-shadow: none;
+}
+html.liquid-glass-ready body :is(.theme-studio,.fit-tabs)[data-liquid-rendered="1"] {
+  border-color: rgba(var(--border-rgb), .13);
+}
+/* Only the selected row has an ordinary accent state; rows themselves are not
+   another glass layer on top of the panel glass. */
+html body .fit-tabs .fit-tab {
+  background: transparent;
+  box-shadow: none;
+}
+html body .fit-tabs .fit-tab.active {
+  border-radius: 18px;
+  border: 1px solid rgba(var(--accent-rgb), .34);
+  background: rgba(var(--accent-rgb), .12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+/* Secondary action buttons: geometry/ink only. The material itself is WebGL. */
+html body .clear-glass-action[data-liquid-glass] {
+  min-height: 52px;
+  padding: 0 26px;
+  border-radius: 24px;
+  background: transparent;
+  border: 1px solid rgba(var(--border-rgb), .17);
+  box-shadow: none;
+  color: var(--text-primary);
+  -webkit-text-fill-color: currentColor;
+  overflow: hidden;
+}
+html.liquid-glass-ready body .clear-glass-action[data-liquid-rendered="1"] {
+  border-color: rgba(var(--border-rgb), .10);
+}
+html body .clear-glass-action svg,
+html body .clear-glass-action path,
+html body .clear-glass-action i {
+  color: currentColor;
+  stroke: currentColor;
+}
+html[data-theme="light"] body .clear-glass-action { color: rgb(20 20 19); }
+html[data-theme="dark"] body .clear-glass-action { color: rgb(248 248 246); }
+
+/* One visual component for every circular arrow. Service arrows and contact
+   arrows differ only in placement, not in material. */
+html body .round-liquid-icon[data-liquid-glass] {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid rgba(var(--border-rgb), .15);
+  box-shadow: none;
+  color: var(--text-primary);
+  -webkit-text-fill-color: currentColor;
+  font-family: var(--font-button);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1;
+  overflow: hidden;
+}
+html.liquid-glass-ready body .round-liquid-icon[data-liquid-rendered="1"] {
+  border-color: rgba(var(--border-rgb), .09);
+}
+html[data-theme="light"] body .round-liquid-icon { color: rgb(18 18 17); }
+html[data-theme="dark"] body .round-liquid-icon { color: rgb(248 248 246); }
+
+/* Original service-arrow placement: top-right of each card. */
+html body .service-card { position: relative; padding-right: 76px; }
+html body .service-action {
+  position: absolute;
+  top: 22px;
+  right: 20px;
+  left: auto;
+  bottom: auto;
+  z-index: 3;
+}
+/* Contact arrow stays at the right side of its row. */
+html body .contact-arrow { justify-self: end; }
+
+/* Panel/menu material separation. These values are fallbacks only; when WebGL
+   is ready the visible blur comes from the scene prefilter in liquid-glass.js. */
+html:not(.liquid-glass-ready) body .theme-studio,
+html:not(.liquid-glass-ready) body .fit-tabs {
+  -webkit-backdrop-filter: blur(30px) saturate(1.02);
+  backdrop-filter: blur(30px) saturate(1.02);
+}
+html:not(.liquid-glass-ready) body .mobile-drawer {
+  -webkit-backdrop-filter: blur(38px) saturate(1.00);
+  backdrop-filter: blur(38px) saturate(1.00);
+}
+
+/* Adaptive foreground remains explicit and accessible. */
+html.liquid-glass-ready [data-liquid-adaptive-ink="1"] {
+  color: var(--liquid-ink, currentColor);
+  -webkit-text-fill-color: currentColor;
+}
+html.liquid-glass-ready [data-liquid-adaptive-ink="1"] svg,
+html.liquid-glass-ready [data-liquid-adaptive-ink="1"] path {
+  color: currentColor;
+  stroke: currentColor;
+}
+
+/* WebGL owns press deformation. Avoid a large CSS scale that would make the
+   material and DOM geometry visibly disagree. */
+html.liquid-glass-ready [data-liquid-glass][data-liquid-rendered="1"]:active {
+  transform: translateY(.35px) scale(.995);
+}
+html.liquid-glass-ready :is(.nav-inner,.theme-studio,.mobile-drawer,.fit-tabs)[data-liquid-rendered="1"]:active {
+  transform: none;
+}
+
+/* Preserve the About View CV as the shared gold action. */
+html body .about-actions .about-gold-cv { width: max-content; }
+
+@media (max-width: 760px) {
+  html body .hero-actions .brand-gold-action,
+  html body .hero-actions .clear-glass-action { width: 100%; }
+  html body .service-card { padding-right: 70px; }
+  html body .service-action {
+    top: 18px;
+    right: 16px;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+  }
+}
+
+
+/* =========================================================
+   27. REFACTION TUNING
+   Reduce noisy bleed while keeping real WebGL glass visible.
+========================================================= */
+
+/* Header: keep the single WebGL container, but remove the extra visual tint and bottom shadow. */
+html body .site-nav,
+html body .site-nav.scrolled {
+  box-shadow: none;
+  border-bottom: 0;
+}
+
+html body .nav-inner {
+  background: transparent;
+  border: 1px solid rgba(var(--border-rgb), .12);
+  box-shadow: none;
+}
+
+html.liquid-glass-ready body .nav-inner[data-liquid-rendered="1"] {
+  border-color: rgba(var(--border-rgb), .10);
+  box-shadow: none;
+}
+
+html.liquid-glass-ready body .nav-inner > .liquid-surface-canvas {
+  opacity: .96;
+}
+
+/* The nav links are plain text inside the one glass shell. */
+html body .nav-links,
+html body .nav-links a,
+html body .nav-links a.active,
+html body .nav-links a[aria-current="true"] {
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+}
+
+/* Header buttons can remain layered, but keep their own tint restrained. */
+html body .icon-btn,
+html body .mobile-toggle {
+  background: rgba(var(--surface-rgb), .20);
+  border: 1px solid rgba(var(--border-rgb), .18);
+  box-shadow: none;
+}
+html[data-theme="light"] body .icon-btn,
+html[data-theme="light"] body .mobile-toggle {
+  background: rgba(255,255,255,.26);
+}
+
+/* Technical Role should visually match Theme Studio at the container level. */
+html body .fit-tabs,
+html body .theme-studio {
+  background: transparent;
+  border: 1px solid rgba(var(--border-rgb), .16);
+  box-shadow: none;
+}
+html.liquid-glass-ready body .fit-tabs > .liquid-surface-canvas,
+html.liquid-glass-ready body .theme-studio > .liquid-surface-canvas {
+  opacity: 1;
+}
+
+/* Execution dots: still WebGL, but with calmer refraction so labels remain clean. */
+html body .rm-node-inner[data-liquid-glass],
+html body .rm-m-dot[data-liquid-glass] {
+  background: transparent;
+  border: 1px solid rgba(var(--border-rgb), .14);
+  box-shadow: none;
+}
+html.liquid-glass-ready body .rm-node-inner[data-liquid-rendered="1"],
+html.liquid-glass-ready body .rm-m-dot[data-liquid-rendered="1"] {
+  border-color: rgba(var(--border-rgb), .10);
+}
+
+/* Round arrows and small liquid icons should pop as glass without grabbing too much scene detail. */
+html body .round-liquid-icon[data-liquid-glass] {
+  border: 1px solid rgba(var(--border-rgb), .13);
+  box-shadow: none;
+}
+html.liquid-glass-ready body .round-liquid-icon[data-liquid-rendered="1"] {
+  border-color: rgba(var(--border-rgb), .09);
+  outline: 1px solid rgba(255,255,255,.08);
+  outline-offset: -1px;
+}
+html body .round-liquid-icon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,0) 38%);
+}
+
+/* Theme Studio / mobile nav should obscure background more when open. */
+html body .theme-studio,
+html body .mobile-drawer {
+  -webkit-backdrop-filter: blur(36px) saturate(1.0);
+  backdrop-filter: blur(36px) saturate(1.0);
+}
+html.liquid-glass-ready body .mobile-drawer[data-liquid-rendered="1"] {
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   28. STABILITY + VISIBILITY POLISH
+   WebGL is retained. This pass only strengthens optical definition,
+   fixes static foreground colors, cleans the header, and spaces the scroll cue.
+========================================================= */
+
+/* Static foreground colors: no environment-driven text flipping. */
+html[data-theme="dark"] body :is(
+  .clear-glass-action,
+  .round-liquid-icon,
+  .rm-node-inner,
+  .rm-m-dot,
+  .portrait-status,
+  .icon-btn,
+  .mobile-toggle
+) {
+  color: rgb(247 244 237);
+  -webkit-text-fill-color: currentColor;
+}
+
+html[data-theme="light"] body :is(
+  .clear-glass-action,
+  .round-liquid-icon,
+  .rm-node-inner,
+  .rm-m-dot,
+  .portrait-status,
+  .icon-btn,
+  .mobile-toggle
+) {
+  color: rgb(20 18 15);
+  -webkit-text-fill-color: currentColor;
+}
+
+html body .rm-node-inner strong,
+html body .rm-node-inner .rm-num,
+html body .rm-m-dot,
+html body .clear-glass-action span,
+html body .round-liquid-icon,
+html body .portrait-status {
+  color: currentColor;
+  -webkit-text-fill-color: currentColor;
+}
+
+html body .clear-glass-action svg,
+html body .clear-glass-action path,
+html body .clear-glass-action i,
+html body .icon-btn svg,
+html body .icon-btn path,
+html body .mobile-toggle svg,
+html body .mobile-toggle path {
+  color: currentColor;
+  stroke: currentColor;
+}
+
+/* Make WebGL buttons/icons visibly read as glass without adding bulky shadows. */
+html body .clear-glass-action[data-liquid-glass],
+html body .round-liquid-icon[data-liquid-glass],
+html body .icon-btn[data-liquid-glass],
+html body .mobile-toggle[data-liquid-glass],
+html body .rm-node-inner[data-liquid-glass],
+html body .rm-m-dot[data-liquid-glass] {
+  background: transparent;
+  box-shadow: none;
+  border-color: rgba(var(--border-rgb), .20);
+  position: relative;
+  isolation: isolate;
+}
+
+html.liquid-glass-ready body :is(
+  .clear-glass-action,
+  .round-liquid-icon,
+  .icon-btn,
+  .mobile-toggle,
+  .rm-node-inner,
+  .rm-m-dot
+)[data-liquid-rendered="1"] {
+  border-color: rgba(var(--border-rgb), .14);
+  outline: 1px solid rgba(255,255,255,.08);
+  outline-offset: -1px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+html[data-theme="light"].liquid-glass-ready body :is(
+  .clear-glass-action,
+  .round-liquid-icon,
+  .icon-btn,
+  .mobile-toggle,
+  .rm-node-inner,
+  .rm-m-dot
+)[data-liquid-rendered="1"] {
+  border-color: rgba(22,20,17,.18);
+  outline-color: rgba(255,255,255,.42);
+}
+
+/* Header: one clean WebGL shell; no bottom shadow/band and no beige nav-link fill. */
+html body .site-nav,
+html body .site-nav.scrolled {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html body .nav-inner,
+html.liquid-glass-ready body .nav-inner[data-liquid-rendered="1"] {
+  background: transparent;
+  border: 1px solid rgba(var(--border-rgb), .11);
+  box-shadow: none;
+}
+
+html body .nav-links,
+html body .nav-links a,
+html body .nav-links a.active,
+html body .nav-links a[aria-current="true"],
+html body .nav-active-fill,
+html.liquid-glass-ready body .nav-active-fill {
+  background: transparent;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+html body .nav-active-fill,
+html.liquid-glass-ready body .nav-active-fill {
+  display: none;
+}
+
+/* Header icons are nested WebGL glass, not flat CSS pills. */
+html body .icon-btn[data-liquid-glass],
+html body .mobile-toggle[data-liquid-glass] {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* Selected execution step keeps the same fixed theme ink; no adaptive flip. */
+html body .rm-node-inner.is-selected strong,
+html body .rm-node-inner.is-selected .rm-num,
+html body .rm-m-dot.is-selected {
+  color: currentColor;
+}
+
+/* Give the Scroll cue more breathing room beneath the hero content above it. */
+.scroll-cue {
+  bottom: 8px;
+}
+.scroll-cue::after {
+  height: 30px;
+}
+
+/* Nested header WebGL icon host must own its canvas geometry. */
+.nav-actions { position: relative; isolation: isolate; }
+.nav-actions > .liquid-surface-canvas { z-index: -1; }
+
+
+/* =========================================================
+   29. CONSISTENCY / NAVIGATION / MORPH POLISH
+   No WebGL surface is removed. This final layer fixes navigation states,
+   icon parity, menu material morphing, and theme-switch consistency.
+========================================================= */
+
+/* A. Header links: no beige inner capsule/fill. The parent WebGL shell is the
+   only material. Hover/active feedback is typography + a thin moving accent. */
+html body .nav-links,
+html body .nav-links::before,
+html body .nav-links::after,
+html body .nav-links a,
+html body .nav-links a::before {
+  background: transparent;
+  box-shadow: none;
+  filter: none;
+}
+
+html body .nav-links a {
+  color: var(--text-secondary);
+  transition: color .20s ease, transform .20s ease;
+}
+
+html body .nav-links a:hover,
+html body .nav-links a:focus-visible {
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+html body .nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 18px;
+  height: 2px;
+  border-radius: 99px;
+  background: var(--accent);
+  opacity: 0;
+  transform: translateX(-50%) scaleX(.35);
+  transition: opacity .20s ease, transform .28s cubic-bezier(.2,.8,.2,1);
+}
+
+html body .nav-links a:hover::after,
+html body .nav-links a:focus-visible::after {
+  opacity: .58;
+  transform: translateX(-50%) scaleX(1);
+}
+
+html body .nav-links a.active,
+html body .nav-links a[aria-current="true"] {
+  color: var(--text-primary);
+}
+
+/* Reuse the existing synchronized fill element as a slim, fluid active line,
+   not a beige capsule. */
+html body .nav-active-fill,
+html.liquid-glass-ready body .nav-active-fill {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--nav-fill-w, 0px);
+  height: 2px;
+  border: 0;
+  border-radius: 99px;
+  background: linear-gradient(90deg, transparent 8%, var(--accent) 28% 72%, transparent 92%);
+  box-shadow: none;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(var(--nav-fill-x,0px), calc(var(--nav-fill-y,0px) + var(--nav-fill-h,0px) - 3px), 0);
+  transition:
+    transform .40s cubic-bezier(.18,.82,.22,1),
+    width .40s cubic-bezier(.18,.82,.22,1),
+    opacity .16s ease;
+}
+html body .nav-active-fill.is-visible { opacity: .95; }
+
+/* B. Mobile navigation: clear tap/active state without adding another glass
+   surface inside the WebGL drawer. */
+html body .mobile-drawer a {
+  position: relative;
+  color: var(--text-secondary);
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+html body .mobile-drawer a:hover,
+html body .mobile-drawer a:focus-visible,
+html body .mobile-drawer a:active,
+html body .mobile-drawer a.active,
+html body .mobile-drawer a[aria-current="true"] {
+  color: var(--text-primary);
+  background: transparent;
+}
+html body .mobile-drawer a::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  width: 3px;
+  height: 0;
+  border-radius: 99px;
+  background: var(--accent);
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: height .28s cubic-bezier(.2,.8,.2,1), opacity .18s ease;
+}
+html body .mobile-drawer a.active::before,
+html body .mobile-drawer a[aria-current="true"]::before {
+  height: 24px;
+  opacity: 1;
+}
+html body .mobile-drawer a.active::after,
+html body .mobile-drawer a[aria-current="true"]::after {
+  content: "";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: none;
+  transform: translateY(-50%);
+}
+
+/* C. Standalone icon parity: service/contact icons use the same dimensions,
+   rim and optical presentation as header icons. Their placement stays intact. */
+html body .round-liquid-icon[data-liquid-glass],
+html body .icon-btn[data-liquid-glass],
+html body .mobile-toggle[data-liquid-glass] {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid rgba(var(--border-rgb), .18);
+  box-shadow: none;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+html.liquid-glass-ready body :is(.round-liquid-icon,.icon-btn,.mobile-toggle)[data-liquid-rendered="1"] {
+  border-color: rgba(var(--border-rgb), .12);
+  outline: 1px solid rgba(255,255,255,.10);
+  outline-offset: -1px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14);
+}
+html[data-theme="light"].liquid-glass-ready body :is(.round-liquid-icon,.icon-btn,.mobile-toggle)[data-liquid-rendered="1"] {
+  border-color: rgba(22,20,17,.16);
+  outline-color: rgba(255,255,255,.48);
+}
+html body .round-liquid-icon[data-liquid-glass]::before,
+html body .icon-btn[data-liquid-glass]::before,
+html body .mobile-toggle[data-liquid-glass]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,0) 38%);
+}
+
+/* D. Fluid panel opening. WebGL is still the material; clip-path/scale only
+   controls its geometry so the panel appears to grow from the trigger. */
+html body .theme-studio,
+html body .mobile-drawer {
+  --liquid-origin-x: calc(100% - 28px);
+  --liquid-origin-y: 0px;
+  --liquid-open-radius: 1200px;
+  transform-origin: var(--liquid-origin-x) var(--liquid-origin-y);
+  clip-path: circle(25px at var(--liquid-origin-x) var(--liquid-origin-y));
+  opacity: 0;
+  transform: scale(.965);
+  will-change: clip-path, transform, opacity, border-radius;
+  transition:
+    clip-path .54s cubic-bezier(.16,.92,.24,1),
+    transform .54s cubic-bezier(.16,.92,.24,1),
+    opacity .15s ease-out,
+    border-radius .46s cubic-bezier(.16,.92,.24,1);
+}
+
+html body .theme-studio.open,
+html body .mobile-drawer.open,
+html body .theme-studio.open[data-liquid-glass],
+html body .mobile-drawer.open[data-liquid-glass],
+html body .theme-studio.open[data-liquid-rendered="1"],
+html body .mobile-drawer.open[data-liquid-rendered="1"] {
+  clip-path: circle(var(--liquid-open-radius) at var(--liquid-origin-x) var(--liquid-origin-y));
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Material first, content second. */
+html body .theme-studio .studio-head,
+html body .theme-studio .studio-body,
+html body .mobile-drawer a {
+  opacity: 0;
+  transform: translateY(-5px) scale(.99);
+  transition: opacity .17s ease, transform .32s cubic-bezier(.2,.8,.2,1);
+}
+html body .theme-studio.open .studio-head,
+html body .theme-studio.open .studio-body,
+html body .mobile-drawer.open a {
+  opacity: 1;
+  transform: none;
+  transition-delay: .075s;
+}
+html body .mobile-drawer.open a:nth-child(2) { transition-delay: .095s; }
+html body .mobile-drawer.open a:nth-child(3) { transition-delay: .115s; }
+html body .mobile-drawer.open a:nth-child(4) { transition-delay: .135s; }
+html body .mobile-drawer.open a:nth-child(5) { transition-delay: .155s; }
+
+/* E. Header cleanup: one WebGL shell and zero inner beige/shadow layer. */
+html body .site-nav,
+html body .site-nav.scrolled,
+html body .nav-inner,
+html.liquid-glass-ready body .nav-inner[data-liquid-rendered="1"] {
+  box-shadow: none;
+}
+html body .nav-inner {
+  background: transparent;
+}
+html body .nav-links {
+  background: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body .theme-studio,
+  html body .mobile-drawer {
+    clip-path: none;
+    transform: none;
+    transition: opacity .01s linear;
+  }
+  html body .theme-studio .studio-head,
+  html body .theme-studio .studio-body,
+  html body .mobile-drawer a {
+    transform: none;
+    transition: opacity .01s linear;
+  }
+}
+
+
+/* =========================================================
+   30. FINAL STABILITY PASS
+   Fixes standalone icon foreground/registration and panel translucency only.
+   No WebGL surface is removed or replaced.
+========================================================= */
+
+/* 1) Standalone icon foreground must match the header icon foreground exactly:
+   black in light mode, white in dark mode. Do not let environmental/material
+   color tint the glyph itself. */
+html[data-theme="light"] body :is(
+  .icon-btn[data-liquid-glass],
+  .mobile-toggle[data-liquid-glass],
+  .round-liquid-icon[data-liquid-glass],
+  .service-action[data-liquid-glass],
+  .contact-arrow[data-liquid-glass]
+) {
+  color: rgb(18 18 17);
+  -webkit-text-fill-color: rgb(18 18 17);
+  text-shadow: none;
+}
+
+html[data-theme="dark"] body :is(
+  .icon-btn[data-liquid-glass],
+  .mobile-toggle[data-liquid-glass],
+  .round-liquid-icon[data-liquid-glass],
+  .service-action[data-liquid-glass],
+  .contact-arrow[data-liquid-glass]
+) {
+  color: rgb(250 250 248);
+  -webkit-text-fill-color: rgb(250 250 248);
+  text-shadow: none;
+}
+
+html body :is(.service-action,.contact-arrow,.round-liquid-icon)[data-liquid-glass] {
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+html body :is(.service-action,.contact-arrow,.round-liquid-icon)[data-liquid-glass] svg,
+html body :is(.service-action,.contact-arrow,.round-liquid-icon)[data-liquid-glass] path,
+html body :is(.service-action,.contact-arrow,.round-liquid-icon)[data-liquid-glass] i {
+  color: currentColor;
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+/* 2) The WebGL lens and the DOM icon must occupy the exact same circular box.
+   The renderer padding for these groups is zeroed in liquid-glass.js; these
+   rules remove any CSS transform that could visually separate the layers. */
+html body :is(.service-action,.contact-arrow,.round-liquid-icon)[data-liquid-glass] {
+  transform-origin: center center;
+}
+html body .service-action[data-liquid-glass]:hover,
+html body .service-action[data-liquid-glass]:focus-visible,
+html body .contact-arrow[data-liquid-glass]:hover,
+html body .contact-arrow[data-liquid-glass]:focus-visible {
+  transform: scale(1.035);
+}
+
+/* 3) Theme Studio and Technical Role remain the SAME WebGL panel material.
+   Their scene is now much more blurred/dimmed in the renderer, so no opaque
+   CSS color is added here. */
+html body .theme-studio,
+html body .fit-tabs,
+html body .mobile-drawer {
+  background: transparent;
+}
+
+html.liquid-glass-ready body .theme-studio[data-liquid-rendered="1"],
+html.liquid-glass-ready body .fit-tabs[data-liquid-rendered="1"] {
+  border-color: rgba(var(--border-rgb), .16);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.16);
+}
+
+html.liquid-glass-ready body .mobile-drawer[data-liquid-rendered="1"] {
+  border-color: rgba(var(--border-rgb), .16);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14);
+}
+
+/* 4) Keep panel content crisp over the stronger WebGL material. */
+html[data-theme="light"] body :is(.theme-studio,.mobile-drawer,.fit-tabs) {
+  color: rgb(22 22 20);
+}
+html[data-theme="dark"] body :is(.theme-studio,.mobile-drawer,.fit-tabs) {
+  color: rgb(248 248 246);
+}
+
+/* 5) Prevent older selectors from re-dimming standalone glyphs. */
+html.liquid-glass-ready body :is(.service-action,.contact-arrow,.round-liquid-icon)[data-liquid-rendered="1"] {
+  opacity: 1;
+}
+
+
+/* =========================================================
+   31. WEBGL LAYER ALIGNMENT + FIXED ICON INK
+   Renderer geometry and visual layer now share the same containing block.
+========================================================= */
+
+/* Group hosts are the coordinate system used by liquid-glass.js. Relative
+   positioning does not change document flow, but guarantees an absolute GPU
+   canvas is painted in the exact box used to calculate its shapes. */
+[data-liquid-render-host="1"] {
+  isolation: isolate;
+}
+
+/* Keep the group canvases tied to their host. Standalone service/contact
+   canvases must never inherit old translate/offset behavior. */
+.services-grid > .liquid-surface-canvas,
+.contact-list > .liquid-surface-canvas {
+  left: 0;
+  top: 0;
+  transform: none;
+  margin: 0;
+}
+
+/* The DOM circle and GPU lens occupy one identical box. */
+html body :is(.service-action,.contact-arrow,.round-liquid-icon)[data-liquid-glass] {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: transparent;
+  line-height: 1;
+}
+
+/* Explicit glyph layer. It is never sampled/tinted by the material and is
+   always above the WebGL canvas and rim highlight. */
+html body .liquid-icon-glyph {
+  position: relative;
+  z-index: 8;
+  display: block;
+  width: 1em;
+  height: 1em;
+  line-height: 1;
+  text-align: center;
+  font-family: var(--font-button);
+  font-size: 18px;
+  font-weight: 900;
+  color: inherit;
+  -webkit-text-fill-color: currentColor;
+  text-shadow: none;
+  pointer-events: none;
+}
+
+/* Exact header-icon foreground rule for all standalone liquid icons. */
+html[data-theme="dark"] body :is(
+  .round-liquid-icon[data-liquid-glass],
+  .service-action[data-liquid-glass],
+  .contact-arrow[data-liquid-glass]
+),
+html[data-theme="dark"] body :is(
+  .round-liquid-icon[data-liquid-glass],
+  .service-action[data-liquid-glass],
+  .contact-arrow[data-liquid-glass]
+) .liquid-icon-glyph {
+  color: rgb(250 250 248);
+  -webkit-text-fill-color: rgb(250 250 248);
+}
+
+html[data-theme="light"] body :is(
+  .round-liquid-icon[data-liquid-glass],
+  .service-action[data-liquid-glass],
+  .contact-arrow[data-liquid-glass]
+),
+html[data-theme="light"] body :is(
+  .round-liquid-icon[data-liquid-glass],
+  .service-action[data-liquid-glass],
+  .contact-arrow[data-liquid-glass]
+) .liquid-icon-glyph {
+  color: rgb(18 18 17);
+  -webkit-text-fill-color: rgb(18 18 17);
+}
+
+/* The decorative highlight is below the glyph. */
+html body :is(.service-action,.contact-arrow,.round-liquid-icon)[data-liquid-glass]::before {
+  z-index: 3;
+}
+
+/* GPU canvas remains the material layer, behind the DOM glyph. */
+html body :is(.service-action,.contact-arrow,.round-liquid-icon)[data-liquid-glass] > .liquid-surface-canvas {
+  z-index: -1;
+}
+
+/* Group canvas lives below the actual icon DOM but above the card background. */
+.services-grid > .liquid-surface-canvas,
+.contact-list > .liquid-surface-canvas {
+  z-index: 1;
+}
+html body .service-action,
+html body .contact-arrow {
+  z-index: 4;
+}
+
+/* Do not let older hover rules translate the DOM away from its WebGL lens. */
+html body .service-action[data-liquid-glass]:hover,
+html body .service-action[data-liquid-glass]:focus-visible,
+html body .contact-arrow[data-liquid-glass]:hover,
+html body .contact-arrow[data-liquid-glass]:focus-visible {
+  transform: scale(1.035);
+}
+
+@media (max-width: 760px) {
+  html body :is(.service-action,.contact-arrow,.round-liquid-icon)[data-liquid-glass] {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+  }
+}
+
+/* Geometry fallback before JS initializes: these grouped WebGL canvases use
+   their own container as the positioning coordinate system on every breakpoint. */
+.services-grid[data-liquid-group-host="service-icons"],
+.contact-list {
+  position: relative;
+  isolation: isolate;
+}
+
+
+/* =========================================================
+   30. FINAL MICRO-FIXES
+   - restore service arrows to top-right opposite the service number
+   - keep standalone icon ink theme-stable
+   - give footer back-to-top the same liquid glass icon treatment
+========================================================= */
+
+/* Force the service arrow back to the original top-right slot. */
+html body .services-grid .service-card {
+  position: relative;
+  padding-right: 76px;
+}
+
+html body .services-grid .service-card > .service-action {
+  position: absolute;
+  top: 22px;
+  right: 20px;
+  left: auto;
+  bottom: auto;
+  margin: 0;
+  align-self: auto;
+  justify-self: auto;
+  transform: none;
+  z-index: 4;
+}
+
+@media (max-width: 760px) {
+  html body .services-grid .service-card {
+    padding-right: 70px;
+  }
+  html body .services-grid .service-card > .service-action {
+    top: 18px;
+    right: 16px;
+    left: auto;
+    bottom: auto;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+  }
+}
+
+/* Keep arrow glyphs high-contrast and not tinted by the glass. */
+html[data-theme="dark"] body .services-grid .service-card > .service-action,
+html[data-theme="dark"] body .services-grid .service-card > .service-action .liquid-icon-glyph,
+html[data-theme="dark"] body .contact-arrow,
+html[data-theme="dark"] body .contact-arrow .liquid-icon-glyph,
+html[data-theme="dark"] body .back-to-top,
+html[data-theme="dark"] body .back-to-top .liquid-icon-glyph {
+  color: rgb(250 250 248);
+  -webkit-text-fill-color: rgb(250 250 248);
+}
+
+html[data-theme="light"] body .services-grid .service-card > .service-action,
+html[data-theme="light"] body .services-grid .service-card > .service-action .liquid-icon-glyph,
+html[data-theme="light"] body .contact-arrow,
+html[data-theme="light"] body .contact-arrow .liquid-icon-glyph,
+html[data-theme="light"] body .back-to-top,
+html[data-theme="light"] body .back-to-top .liquid-icon-glyph {
+  color: rgb(18 18 17);
+  -webkit-text-fill-color: rgb(18 18 17);
+}
+
+/* Footer back-to-top gets the same standalone round glass design. */
+html body .back-to-top.round-liquid-icon[data-liquid-glass] {
+  position: absolute;
+  right: max(24px, calc((100vw - var(--container-w)) / 2 - 74px));
+  bottom: 34px;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid rgba(var(--border-rgb), .12);
+  box-shadow: none;
+  overflow: hidden;
+  z-index: 5;
+}
+
+html body .back-to-top.round-liquid-icon[data-liquid-glass]:hover,
+html body .back-to-top.round-liquid-icon[data-liquid-glass]:focus-visible {
+  transform: translateY(-3px) scale(1.03);
+}
+
+html body .back-to-top.round-liquid-icon[data-liquid-glass]::before {
+  z-index: 3;
+}
+
+html body .back-to-top.round-liquid-icon[data-liquid-glass] .liquid-icon-glyph {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+@media (max-width: 760px) {
+  html body .back-to-top.round-liquid-icon[data-liquid-glass] {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    margin: 26px 20px 0 auto;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+
+/* =========================================================
+   31. FINAL STABILITY / PERFORMANCE PASS
+   No layout redesign. Keeps WebGL while removing interaction stalls.
+========================================================= */
+
+:root {
+  --standalone-icon-ink: rgb(250 250 248);
+}
+html[data-theme="light"] {
+  --standalone-icon-ink: rgb(18 18 17);
+}
+
+/* Deterministic standalone glyph colour: no environmental tint, blend mode,
+   opacity or filter can make these arrows disappear into the material. */
+html body :is(.service-action,.contact-arrow,.back-to-top).round-liquid-icon,
+html body :is(.service-action,.contact-arrow,.back-to-top).round-liquid-icon .liquid-icon-glyph {
+  color: var(--standalone-icon-ink);
+  -webkit-text-fill-color: var(--standalone-icon-ink);
+  opacity: 1;
+  filter: none;
+  mix-blend-mode: normal;
+  text-shadow: none;
+}
+html body :is(.service-action,.contact-arrow,.back-to-top).round-liquid-icon .liquid-icon-glyph {
+  z-index: 20;
+}
+
+/* Desktop footer control: keep it inside the viewport and above footer content. */
+html body footer .back-to-top.round-liquid-icon[data-liquid-glass] {
+  display: grid;
+  visibility: visible;
+  opacity: 1;
+  position: absolute;
+  right: max(24px, calc((100vw - var(--container-w)) / 2));
+  bottom: 34px;
+  margin: 0;
+  z-index: 30;
+  isolation: isolate;
+}
+@media (max-width: 760px) {
+  html body footer .back-to-top.round-liquid-icon[data-liquid-glass] {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    margin: 26px 20px 0 auto;
+  }
+}
+
+/* Reveal motion is still present, but no longer feels like content is loading
+   one block at a time. */
+.reveal {
+  transform: translateY(14px);
+  transition: opacity .42s var(--ease), transform .42s var(--ease);
+}
+.reveal.visible { transform: translateY(0); }
+.delay-1 { transition-delay: .035s; }
+.delay-2 { transition-delay: .07s; }
+.delay-3 { transition-delay: .105s; }
+
+/* Theme switching gets a short, consistent transition window without
+   permanently disabling hover/interaction transitions. */
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition-duration: .12s;
+  transition-delay: 0s;
+}
+
+
+/* =========================================================
+   32. FINAL DETERMINISTIC GLASS PASS
+========================================================= */
+
+/* Standalone icons use actual SVG strokes, not font glyph anti-aliasing. */
+html body .liquid-icon-glyph {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  color: var(--standalone-icon-ink);
+  -webkit-text-fill-color: var(--standalone-icon-ink);
+  opacity: 1;
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+html body .liquid-icon-glyph svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  overflow: visible;
+  fill: none;
+  stroke: var(--standalone-icon-ink);
+  color: var(--standalone-icon-ink);
+  stroke-width: 2.35;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 1;
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+html[data-theme="dark"] body :is(.service-action,.contact-arrow,.back-to-top) .liquid-icon-glyph,
+html[data-theme="dark"] body :is(.service-action,.contact-arrow,.back-to-top) .liquid-icon-glyph svg {
+  --standalone-icon-ink: rgb(255 255 255);
+  color: rgb(255 255 255);
+  stroke: rgb(255 255 255);
+}
+
+html[data-theme="light"] body :is(.service-action,.contact-arrow,.back-to-top) .liquid-icon-glyph,
+html[data-theme="light"] body :is(.service-action,.contact-arrow,.back-to-top) .liquid-icon-glyph svg {
+  --standalone-icon-ink: rgb(0 0 0);
+  color: rgb(0 0 0);
+  stroke: rgb(0 0 0);
+}
+
+/* Keep the canvas beneath the SVG foreground no matter how group stacking changes. */
+html body :is(.service-action,.contact-arrow,.back-to-top).round-liquid-icon {
+  isolation: isolate;
+}
+html body :is(.service-action,.contact-arrow,.back-to-top).round-liquid-icon .liquid-icon-glyph {
+  position: relative;
+  z-index: 50;
+}
+html body :is(.service-action,.contact-arrow,.back-to-top).round-liquid-icon::before {
+  z-index: 2;
+}
+
+/* Reserve footer space for the desktop back-to-top control. */
+@media (min-width: 761px) {
+  html body footer .footer-bottom {
+    padding-right: 92px;
+  }
+  html body footer .back-to-top.round-liquid-icon[data-liquid-glass] {
+    right: 24px;
+    bottom: 24px;
+    margin: 0;
+  }
+}
+
+/* Theme Studio and mobile navigation stay WebGL but are materially frostier. */
+html.liquid-glass-ready body .theme-studio[data-liquid-rendered="1"],
+html.liquid-glass-ready body .fit-tabs[data-liquid-rendered="1"],
+html.liquid-glass-ready body .mobile-drawer[data-liquid-rendered="1"] {
+  background: transparent;
+  box-shadow: none;
+}
+html.liquid-glass-ready body .theme-studio > .liquid-surface-canvas,
+html.liquid-glass-ready body .fit-tabs > .liquid-surface-canvas,
+html.liquid-glass-ready body .mobile-drawer > .liquid-surface-canvas {
+  opacity: 1;
+}
+
+/* No CSS pointer-follow lighting. */
+html body [data-liquid-glass] {
+  --glass-x: 50%;
+  --glass-y: 0%;
+}
+
+/* =========================================================
+   33. SERVICE ARROW INK — final targeted override
+   Older generic liquid-icon rules set stroke:currentColor on the SVG path
+   itself. Target the five service paths directly so the foreground cannot
+   inherit a muted glass tone.
+========================================================= */
+html[data-theme="dark"] body .services-grid .service-action .liquid-icon-glyph,
+html[data-theme="dark"] body .services-grid .service-action .liquid-icon-glyph svg,
+html[data-theme="dark"] body .services-grid .service-action .liquid-icon-glyph svg path {
+  color: #fff;
+  stroke: #fff;
+  stroke-opacity: 1;
+  opacity: 1;
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+html[data-theme="light"] body .services-grid .service-action .liquid-icon-glyph,
+html[data-theme="light"] body .services-grid .service-action .liquid-icon-glyph svg,
+html[data-theme="light"] body .services-grid .service-action .liquid-icon-glyph svg path {
+  color: #000;
+  stroke: #000;
+  stroke-opacity: 1;
+  opacity: 1;
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+html body .services-grid .service-action .liquid-icon-glyph svg path {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+
+/* =========================================================
+   COMPONENT CONTRACTS — canonical final values
+   These replace the old specificity battles without changing the established UI.
+========================================================= */
+
+/* Branded CTA owns its fill regardless of where it appears in navigation/content. */
+html body .brand-gold-action {
+  background: var(--accent);
+  color: #000000;
+  -webkit-text-fill-color: #000000;
+}
+
+/* Contact arrows remain centered within their existing glass geometry. */
+html body .contact-arrow {
+  text-align: center;
+}
+
+/* Theme Studio and mobile menu retain the existing fluid material morph. */
+html body .theme-studio,
+html body .mobile-drawer {
+  transform-origin: var(--liquid-origin-x) var(--liquid-origin-y);
+  clip-path: circle(25px at var(--liquid-origin-x) var(--liquid-origin-y));
+  opacity: 0;
+  transform: scale(.965);
+}
+html body .theme-studio.open,
+html body .mobile-drawer.open,
+html body .theme-studio.open[data-liquid-glass],
+html body .mobile-drawer.open[data-liquid-glass],
+html body .theme-studio.open[data-liquid-rendered="1"],
+html body .mobile-drawer.open[data-liquid-rendered="1"] {
+  clip-path: circle(var(--liquid-open-radius) at var(--liquid-origin-x) var(--liquid-origin-y));
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Standalone Liquid Glass icon ink is a theme token, not an adaptive/glass colour. */
+:root,
+html[data-theme="dark"] {
+  --standalone-icon-ink: rgb(250 250 248);
+}
+html[data-theme="light"] {
+  --standalone-icon-ink: rgb(18 18 17);
+}
+html body :is(.service-action,.contact-arrow,.back-to-top).round-liquid-icon,
+html body :is(.service-action,.contact-arrow,.back-to-top).round-liquid-icon .liquid-icon-glyph {
+  color: var(--standalone-icon-ink);
+  -webkit-text-fill-color: var(--standalone-icon-ink);
+  opacity: 1;
+  filter: none;
+  mix-blend-mode: normal;
+  text-shadow: none;
+}
+html body .liquid-icon-glyph svg path {
+  fill: none;
+  stroke: var(--standalone-icon-ink);
+  stroke-width: 2.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-opacity: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Preserve the established footer control geometry without competing declarations. */
+html body footer .back-to-top.round-liquid-icon[data-liquid-glass] {
+  display: grid;
+  visibility: visible;
+  opacity: 1;
+  position: absolute;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  right: 24px;
+  bottom: 24px;
+  margin: 0;
+  border-radius: 999px;
+  z-index: 30;
+  isolation: isolate;
+}
+@media (max-width: 760px) {
+  html body footer .back-to-top.round-liquid-icon[data-liquid-glass] {
+    position: relative;
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    min-height: 42px;
+    right: auto;
+    bottom: auto;
+    margin: 26px 20px 0 auto;
+  }
+}
+
+/* Technical Role keeps the established panel/tab treatment. */
+html body .fit-tabs {
+  background: transparent;
+  border: 1px solid rgba(var(--border-rgb), .18);
+  box-shadow: none;
+}
+html body .fit-tabs .fit-tab {
+  background: transparent;
+  box-shadow: none;
+}
+html body .fit-tabs .fit-tab.active {
+  border-radius: 18px;
+  border: 1px solid rgba(var(--accent-rgb), .34);
+  background: rgba(var(--accent-rgb), .12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+
+/* =========================================================
+   SERVICE ICON COMPOSITING FIX
+   The service cards used transform: translateY(0) after reveal. Any non-none
+   transform creates a local stacking context, trapping the arrow SVG below the
+   shared WebGL service-icons canvas even when the arrow itself had a higher
+   z-index. Keep the same visual motion using relative top instead, so the DOM
+   foreground can sit above the WebGL material as intended.
+========================================================= */
+.services-grid .service-card.reveal {
+  position: relative;
+  top: 14px;
+  transform: none;
+  transition:
+    opacity .42s var(--ease),
+    top .42s var(--ease),
+    background .25s var(--ease);
+}
+
+.services-grid .service-card.reveal.visible {
+  top: 0;
+  transform: none;
+}
+
+.services-grid .service-card:hover,
+.services-grid .service-card.reveal.visible:hover {
+  top: -3px;
+  transform: none;
+}
+
+/* WebGL remains above the card surface; the arrow DOM foreground can now
+   participate in this host stacking context and render above the canvas. */
+.services-grid > .liquid-surface-canvas {
+  z-index: 1;
+}
+
+.services-grid .service-action {
+  z-index: 4;
+}
+
+
+/* =========================================================
+   OPTICAL LIQUID GLASS / MOBILE POLISH
+   WebGL remains the material owner. CSS only controls layout and foreground.
+========================================================= */
+
+/* Phone header: keep the two glass icon controls + menu, remove Hire Ray only. */
+@media (max-width: 760px) {
+  html body .site-nav .nav-actions > .nav-cta.brand-gold-action {
+    display: none;
+  }
+}
+
+/* Once WebGL is ready, avoid CSS frosting that visually masks shader optics. */
+html.liquid-glass-ready body :is(
+  .nav-inner,
+  .clear-glass-action,
+  .round-liquid-icon,
+  .rm-node-inner,
+  .rm-m-dot
+)[data-liquid-rendered="1"] {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* WebGL owns the body. A very restrained edge keeps controls legible without
+   making them look like ordinary CSS pills. */
+html.liquid-glass-ready body :is(.clear-glass-action,.round-liquid-icon)[data-liquid-rendered="1"] {
+  box-shadow: none;
+}
+
+/* Mobile Safari compositor hints: isolate the fixed panels and avoid forcing
+   unrelated page content into their compositing layer. */
+@supports (-webkit-touch-callout: none) {
+  .nav-inner,
+  .theme-studio,
+  .mobile-drawer,
+  .liquid-surface-canvas {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  .theme-studio,
+  .mobile-drawer {
+    contain: layout paint style;
+  }
+}
+
+
+/* =========================================================
+   HEADER LIQUID CONTACT POLISH
+   Rest appearance is unchanged. WebGL owns the press flex for header icons.
+========================================================= */
+html.liquid-glass-ready body :is(.icon-btn,.mobile-toggle)[data-liquid-rendered="1"]:active {
+  transform: none;
+}
+
+
+/* =========================================================
+   FLUID MODE SELECTOR + BRANDED MATERIAL DEPTH
+   The System/Dark/Light control uses Theme Studio's existing WebGL plane.
+========================================================= */
+
+/* The segmented track is only geometry. Its active material lobe is rendered
+   by Theme Studio's WebGL shader, so there are not three competing pill fills. */
+html body .theme-studio .segmented {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: transparent;
+  border-color: rgba(var(--border-rgb), .22);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.055);
+}
+
+html body .theme-studio .segment {
+  position: relative;
+  z-index: 2;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: var(--text-secondary);
+  transition: color 180ms ease, opacity 180ms ease;
+}
+
+html body .theme-studio .segment.active {
+  background: transparent;
+  box-shadow: none;
+  color: #070707;
+}
+
+html body .theme-studio .segment:hover,
+html body .theme-studio .segment:focus-visible {
+  background: transparent;
+  color: var(--text-primary);
+}
+
+/* Branded gold remains a distinct prominent action, but now has physical
+   thickness/highlight instead of looking like a flat solid-color rectangle. */
+html body .brand-gold-action {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(130% 170% at 50% -82%, rgba(255,255,255,.34) 0 34%, rgba(255,255,255,.10) 48%, transparent 66%),
+    linear-gradient(180deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,0) 44%, rgba(76,49,13,.10) 100%),
+    var(--accent);
+  border-color: rgba(var(--accent-rgb), .78);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.38),
+    inset 0 -2px 0 rgba(72,47,14,.18),
+    0 4px 10px rgba(var(--accent-rgb), .12);
+  text-shadow: 0 1px 0 rgba(255,255,255,.12);
+  transition: transform 180ms cubic-bezier(.2,.8,.2,1), filter 180ms ease, box-shadow 180ms ease;
+}
+
+html body .brand-gold-action::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 1px 9% 52%;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255,255,255,.24), rgba(255,255,255,0));
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+html body .brand-gold-action:hover,
+html body .brand-gold-action:focus-visible {
+  transform: scale(1.008);
+  filter: brightness(1.025);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.42),
+    inset 0 -2px 0 rgba(72,47,14,.19),
+    0 5px 12px rgba(var(--accent-rgb), .14);
+}
+
+html body .brand-gold-action:active {
+  transform: scale(.982);
+  box-shadow:
+    inset 0 2px 3px rgba(73,48,15,.16),
+    inset 0 -1px 0 rgba(255,255,255,.20),
+    0 2px 6px rgba(var(--accent-rgb), .10);
+}
+
+/* =========================================================
+   GOLD ACTION DEPTH RESTORE — 2026-08-16
+   Visual-only material depth. Geometry/layout remain unchanged.
+========================================================= */
+html body .brand-gold-action {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.28) 0%,
+      rgba(255,255,255,.12) 26%,
+      rgba(255,255,255,.025) 48%,
+      rgba(0,0,0,.085) 72%,
+      rgba(0,0,0,.18) 100%
+    ),
+    var(--accent);
+  border-color: rgba(var(--accent-rgb), .92);
+  box-shadow:
+    inset 0 2px 1px rgba(255,255,255,.42),
+    inset 0 -3px 2px rgba(0,0,0,.22),
+    inset 0 0 0 1px rgba(255,255,255,.08),
+    0 2px 0 rgba(0,0,0,.22),
+    0 7px 15px rgba(0,0,0,.10),
+    0 5px 13px rgba(var(--accent-rgb), .16);
+  text-shadow: 0 1px 0 rgba(255,255,255,.18);
+}
+
+html body .brand-gold-action::before {
+  z-index: 0;
+  inset: 1px 7% 55%;
+  background: linear-gradient(180deg, rgba(255,255,255,.30), rgba(255,255,255,.03));
+  opacity: .72;
+  mix-blend-mode: screen;
+}
+
+html body .brand-gold-action:hover,
+html body .brand-gold-action:focus-visible {
+  transform: translateY(-1px) scale(1.006);
+  filter: brightness(1.025);
+  box-shadow:
+    inset 0 2px 1px rgba(255,255,255,.48),
+    inset 0 -3px 2px rgba(0,0,0,.23),
+    inset 0 0 0 1px rgba(255,255,255,.10),
+    0 3px 0 rgba(0,0,0,.22),
+    0 9px 18px rgba(0,0,0,.12),
+    0 6px 15px rgba(var(--accent-rgb), .18);
+}
+
+html body .brand-gold-action:active {
+  transform: translateY(2px) scale(.988);
+  filter: brightness(.985);
+  box-shadow:
+    inset 0 3px 4px rgba(0,0,0,.20),
+    inset 0 -1px 0 rgba(255,255,255,.22),
+    inset 0 0 0 1px rgba(255,255,255,.06),
+    0 1px 0 rgba(0,0,0,.18),
+    0 3px 7px rgba(0,0,0,.08);
+}
+
+/* =========================================================
+   CANONICAL SOLID BLACK TEXT ON ACTIONS & CTA
+   Ensures written words on all brand action buttons and CTAs
+   remain solid crisp black in all themes, backgrounds, and states.
+========================================================= */
+:is(.brand-gold-action, .nav-cta, .btn-primary, .project-more-toggle, .section-link.brand-gold-action, .segment.active),
+:is(.brand-gold-action, .nav-cta, .btn-primary, .project-more-toggle, .section-link.brand-gold-action, .segment.active):hover,
+:is(.brand-gold-action, .nav-cta, .btn-primary, .project-more-toggle, .section-link.brand-gold-action, .segment.active):focus-visible,
+:is(.brand-gold-action, .nav-cta, .btn-primary, .project-more-toggle, .section-link.brand-gold-action, .segment.active):active,
+html body :is(.brand-gold-action, .nav-cta, .btn-primary, .project-more-toggle, .section-link.brand-gold-action, .segment.active),
+html body :is(.brand-gold-action, .nav-cta, .btn-primary, .project-more-toggle, .section-link.brand-gold-action, .segment.active):hover,
+html body :is(.brand-gold-action, .nav-cta, .btn-primary, .project-more-toggle, .section-link.brand-gold-action, .segment.active):focus-visible,
+html body :is(.brand-gold-action, .nav-cta, .btn-primary, .project-more-toggle, .section-link.brand-gold-action, .segment.active):active {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+  text-shadow: none !important;
+}
+
+html body :is(.brand-gold-action, .nav-cta, .btn-primary, .project-more-toggle) :is(svg, path) {
+  color: #000000 !important;
+  stroke: #000000 !important;
+}

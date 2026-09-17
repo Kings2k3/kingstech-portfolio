@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-font-head="manrope" data-font-body="inter" data-font-button="inter"
+  data-accent="gold" data-background="black">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- First-visit boot state: tiny and synchronous so the loader decision is made before paint -->
+  <script>
+    (() => {
+      const build = '20260916-kingstech-v1';
+      const key = `kingstech:boot:${build}`;
+      const themeKey = 'kingstech:theme-preference';
+      let warm = false;
+      let savedTheme = 'system';
+      try {
+        warm = localStorage.getItem(key) === 'ready';
+        const storedTheme = localStorage.getItem(themeKey) || localStorage.getItem('raynerdtech:theme-preference');
+        if (storedTheme === 'dark' || storedTheme === 'light' || storedTheme === 'system') savedTheme = storedTheme;
+      } catch (_) { }
+      const actualTheme = savedTheme === 'system'
+        ? (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+        : savedTheme;
+      document.documentElement.dataset.theme = actualTheme;
+      document.documentElement.dataset.themePreference = savedTheme;
+      const currentBackground = document.documentElement.dataset.background;
+      if (actualTheme === 'light' && ['black', 'charcoal', 'espresso', 'slate'].includes(currentBackground)) {
+        document.documentElement.dataset.background = 'paper';
+      } else if (actualTheme === 'dark' && ['paper', 'porcelain', 'warm'].includes(currentBackground)) {
+        document.documentElement.dataset.background = 'black';
+      }
+      document.documentElement.dataset.bootVisit = warm ? 'warm' : 'cold';
+      window.__KINGS_THEME_PREF = savedTheme;
+      window.__KINGS_BOOT = { build, key, warm, startedAt: performance.now() };
+    })();
+  </script>
+
+  <!-- Critical loader CSS inline -->
+  <style>
+    #bootLoader {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483000;
+      display: grid;
+      place-items: center;
+      background: #080808;
+      color: #f7f4ee;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity .28s cubic-bezier(.2, .75, .25, 1), visibility .28s linear;
+    }
+
+    html[data-boot-visit="warm"] #bootLoader {
+      display: none;
+    }
+
+    html.boot-complete #bootLoader {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .boot-loader__lockup {
+      display: grid;
+      justify-items: center;
+      gap: 16px;
+      transform: translateY(-2vh);
+    }
+
+    .boot-loader__logo {
+      width: 68px;
+      height: 68px;
+      display: block;
+      object-fit: contain;
+    }
+
+    .boot-loader__name {
+      margin: 0;
+      font: 800 13px/1 'Space Grotesk', system-ui, -apple-system, sans-serif;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      opacity: .88;
+      color: #B08D57;
+    }
+
+    .boot-loader__track {
+      position: relative;
+      width: 108px;
+      height: 2px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, .12);
+      border-radius: 99px;
+    }
+
+    .boot-loader__track::after {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 44%;
+      background: #B08D57;
+      border-radius: inherit;
+      transform: translateX(-115%);
+      animation: kingsBootSweep .92s cubic-bezier(.65, 0, .35, 1) infinite;
+    }
+
+    @keyframes kingsBootSweep {
+      0% {
+        transform: translateX(-115%);
+      }
+
+      58%,
+      100% {
+        transform: translateX(255%);
+      }
+    }
+
+    html[data-theme="light"] #bootLoader {
+      background: #f7f3ec;
+      color: #171512;
+    }
+
+    html[data-theme="light"] .boot-loader__track {
+      background: rgba(20, 18, 15, .12);
+    }
+
+    html[data-theme="dark"] #bootLoader {
+      background: #080808;
+      color: #f7f4ee;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #bootLoader {
+        transition-duration: .01ms;
+      }
+
+      .boot-loader__track::after {
+        animation: none;
+        width: 100%;
+        opacity: .58;
+        transform: none;
+      }
+    }
+  </style>
+  <meta name="color-scheme" content="dark light" />
+
+  <!-- ── Primary SEO ── -->
+  <title>kingsTech | Full-Stack Developer &amp; SaaS Architect · Websites, Apps, WordPress &amp; Shopify</title>
+  <meta name="description"
+    content="kingsTech — Full-stack software developer building premium websites, SaaS apps, Shopify stores, and WordPress systems. Clean architecture, high speed, and remote-friendly." />
+  <meta name="author" content="kingsTech" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- ── Theme color ── -->
+  <meta name="theme-color" content="#B08D57" />
+
+  <!-- ── Favicons ── -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="apple-touch-icon" href="assets/favicon.svg" />
+
+  <!-- ── Preload LCP hero image ── -->
+  <link rel="preload" as="image" href="assets/kings-portrait.jpg" fetchpriority="high" />
+
+  <!-- ── Open Graph ── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="kingsTech" />
+  <meta property="og:title" content="kingsTech | Full-Stack Developer &amp; SaaS Architect" />
+  <meta property="og:description"
+    content="Full-stack developer building websites, SaaS platforms, Shopify stores, and WordPress systems. Open for projects and roles." />
+  <meta property="og:image" content="assets/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- ── Twitter Card ── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@kingstech_dev" />
+  <meta name="twitter:creator" content="@kingstech_dev" />
+  <meta name="twitter:title" content="kingsTech | Full-Stack Developer &amp; Product Builder" />
+  <meta name="twitter:description"
+    content="Full-stack developer building websites, SaaS platforms, Shopify stores, and WordPress systems." />
+  <meta name="twitter:image" content="assets/og-image.jpg" />
+
+  <!-- ── JSON-LD Structured Data ── -->
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Kingsley",
+      "alternateName": "kingsTech",
+      "email": "kingstech.dev@gmail.com",
+      "telephone": "+2348022982025",
+      "jobTitle": "Full-Stack Software Engineer & Product Architect",
+      "description": "Full-stack developer building websites, web apps, SaaS platforms, Shopify stores, and WordPress systems. Available for remote work worldwide.",
+      "sameAs": [
+        "https://github.com/kingstech-dev",
+        "https://x.com/kingstech_dev",
+        "https://www.linkedin.com/in/kingstech"
+      ],
+      "knowsAbout": [
+        "React",
+        "Next.js",
+        "Node.js",
+        "TypeScript",
+        "JavaScript",
+        "PostgreSQL",
+        "WordPress",
+        "Shopify",
+        "Tailwind CSS",
+        "SEO",
+        "SaaS Development",
+        "Web Development"
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "kingsTech",
+      "description": "Full-stack web development services including custom websites, SaaS platforms, WordPress development, Shopify stores, and technical SEO.",
+      "areaServed": "Worldwide",
+      "serviceType": [
+        "Web Development",
+        "App Development",
+        "WordPress Development",
+        "Shopify Development",
+        "SEO"
+      ]
+    }
+  ]
+  </script>
+
+  <!-- ── Google Fonts ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;450;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" crossorigin="anonymous" />
+
+  <!-- Critical styles & scripts -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preload" as="script" href="script.js" />
+  <link rel="modulepreload" href="liquid-glass.js" />
+</head>
+
+<body>
+
+  <!-- First-visit Boot Loader -->
+  <div id="bootLoader" role="status" aria-live="polite" aria-label="Preparing kingsTech portfolio">
+    <div class="boot-loader__lockup">
+      <img class="boot-loader__logo" src="assets/mark.svg" alt="kingsTech logo" width="68" height="68" />
+      <p class="boot-loader__name">kingsTech</p>
+      <div class="boot-loader__track" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <!-- Main Site Navigation -->
+  <header class="site-nav" id="siteNav">
+    <div class="container nav-inner liquid-panel-surface" data-liquid-glass data-liquid-group="navigation"
+      data-liquid-group-host="navigation" data-liquid-variant="regular" data-liquid-strength="1.00"
+      data-liquid-merge="0">
+      <a class="wordmark" href="#top" aria-label="kingsTech portfolio home">
+        <img class="wordmark-logo" src="assets/logo.svg" alt="kingsTech" width="170" height="42" />
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#work">Projects</a>
+        <a href="#execution">Execution</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle dark and light mode"
+          data-liquid-glass data-liquid-group="header-icons" data-liquid-variant="regular" data-liquid-strength="1.04"
+          data-liquid-merge="0">◐</button>
+        <button class="icon-btn" id="studioToggle" type="button" aria-label="Open Theme Studio" data-liquid-glass
+          data-liquid-group="header-icons" data-liquid-variant="regular" data-liquid-strength="1.04"
+          data-liquid-merge="0">◧</button>
+        <a class="nav-cta brand-gold-action" href="mailto:kingstech.dev@gmail.com">Hire kingsTech</a>
+        <button class="mobile-toggle" id="mobileToggle" type="button" aria-label="Open menu" data-liquid-glass
+          data-liquid-group="header-mobile-icon" data-liquid-variant="regular" data-liquid-strength="1.04"
+          data-liquid-merge="0">
+          <span class="hamburger-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <nav class="mobile-drawer liquid-panel-surface" id="mobileDrawer" aria-label="Mobile navigation" data-liquid-glass
+    data-liquid-group="mobile-navigation" data-liquid-group-host="mobile-navigation" data-liquid-variant="regular"
+    data-liquid-strength="1.00" data-liquid-merge="0">
+    <a class="active" href="#work" aria-current="true">Projects</a>
+    <a href="#execution">Execution</a>
+    <a href="#services">Services</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <!-- Interactive Theme Studio -->
+  <aside class="theme-studio liquid-panel-surface" id="themeStudio" aria-label="Theme Studio panel" data-liquid-glass
+    data-liquid-group="theme-studio" data-liquid-group-host="theme-studio" data-liquid-variant="regular"
+    data-liquid-strength="1.00" data-liquid-merge="0">
+    <div class="studio-head">
+      <div>
+        <div class="studio-kicker">Site controls</div>
+        <div class="studio-title">Theme Studio</div>
+      </div>
+      <button class="studio-close" id="studioClose" type="button" aria-label="Close Theme Studio">×</button>
+    </div>
+    <div class="studio-body">
+      <div class="studio-group">
+        <div class="studio-label">Mode</div>
+        <div class="segmented" role="group" aria-label="Theme mode">
+          <button class="segment active" data-theme-choice="system" type="button">System</button>
+          <button class="segment" data-theme-choice="dark" type="button">Dark</button>
+          <button class="segment" data-theme-choice="light" type="button">Light</button>
+        </div>
+      </div>
+      <div class="studio-group">
+        <div class="studio-label">Background</div>
+        <div class="swatches" role="group" aria-label="Background color">
+          <button class="swatch active" data-background-choice="black" type="button" style="background:#000000"
+            aria-label="Black"></button>
+          <button class="swatch" data-background-choice="charcoal" type="button" style="background:#0A0A0A"
+            aria-label="Charcoal"></button>
+          <button class="swatch" data-background-choice="espresso" type="button" style="background:#15110D"
+            aria-label="Espresso"></button>
+          <button class="swatch" data-background-choice="slate" type="button" style="background:#11161A"
+            aria-label="Slate"></button>
+          <button class="swatch" data-background-choice="paper" type="button" style="background:#F7F3EC"
+            aria-label="Paper"></button>
+          <button class="swatch" data-background-choice="porcelain" type="button" style="background:#F6F5F1"
+            aria-label="Porcelain"></button>
+          <button class="swatch" data-background-choice="warm" type="button" style="background:#EFE6DA"
+            aria-label="Warm"></button>
+        </div>
+      </div>
+      <div class="studio-group">
+        <div class="studio-label">Heading font</div>
+        <div class="option-grid">
+          <button class="option active" data-font-head-choice="manrope"
+            type="button"><strong>Manrope</strong><span>Executive sans</span></button>
+          <button class="option" data-font-head-choice="grotesk" type="button"><strong>Space
+              Grotesk</strong><span>Technical modern</span></button>
+          <button class="option" data-font-head-choice="plex" type="button"><strong>IBM Plex
+              Sans</strong><span>Professional system</span></button>
+          <button class="option" data-font-head-choice="serif" type="button"><strong>Source
+              Serif</strong><span>Editorial mature</span></button>
+        </div>
+      </div>
+      <div class="studio-group">
+        <div class="studio-label">Body font</div>
+        <div class="option-grid">
+          <button class="option active" data-font-body-choice="inter" type="button"><strong>Inter</strong><span>Neutral
+              interface</span></button>
+          <button class="option" data-font-body-choice="manrope" type="button"><strong>Manrope</strong><span>Clean
+              geometric</span></button>
+          <button class="option" data-font-body-choice="plex" type="button"><strong>IBM Plex Sans</strong><span>Precise
+              technical</span></button>
+          <button class="option" data-font-body-choice="grotesk" type="button"><strong>Space
+              Grotesk</strong><span>Sharper voice</span></button>
+        </div>
+      </div>
+      <div class="studio-group">
+        <div class="studio-label">Button / UI font</div>
+        <div class="option-grid">
+          <button class="option active" data-font-button-choice="inter"
+            type="button"><strong>Inter</strong><span>Standard UI</span></button>
+          <button class="option" data-font-button-choice="manrope" type="button"><strong>Manrope</strong><span>Premium
+              UI</span></button>
+          <button class="option" data-font-button-choice="plex" type="button"><strong>IBM Plex
+              Sans</strong><span>Technical UI</span></button>
+          <button class="option" data-font-button-choice="grotesk" type="button"><strong>Space
+              Grotesk</strong><span>Distinct UI</span></button>
+        </div>
+      </div>
+      <div class="studio-group">
+        <div class="studio-label">Accent</div>
+        <div class="swatches" role="group" aria-label="Accent color">
+          <button class="swatch active" data-accent-choice="gold" type="button" style="background:#B08D57"
+            aria-label="Imperial Gold"></button>
+          <button class="swatch" data-accent-choice="black" type="button" style="background:#111111"
+            aria-label="Obsidian / Mono"></button>
+          <button class="swatch" data-accent-choice="bronze" type="button" style="background:#A66F47"
+            aria-label="Bronze"></button>
+          <button class="swatch" data-accent-choice="sage" type="button" style="background:#7C8B72"
+            aria-label="Sage"></button>
+          <button class="swatch" data-accent-choice="steel" type="button" style="background:#8E9AA7"
+            aria-label="Steel"></button>
+        </div>
+      </div>
+      <p class="tone-note">Controls dynamically update headings, body typography, glass surfaces, borders, and accent
+        tokens across the entire site in real-time.</p>
+    </div>
+  </aside>
+
+  <main id="top">
+
+    <!-- HERO SECTION -->
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="container hero-grid" data-liquid-group-host="hero-glass">
+        <div class="hero-copy">
+          <div class="eyebrow reveal visible">Full-Stack Developer · Product Builder</div>
+          <h1 id="heroTitle" class="reveal visible delay-1">I build premium software that works reliably</h1>
+          <p class="hero-sub reveal visible delay-2">Clean, fast websites, apps, SaaS tools, Shopify stores, WordPress
+            builds, and business systems engineered for real-world impact.</p>
+          <div class="hero-actions reveal visible delay-3">
+            <a class="btn-primary brand-gold-action" href="mailto:kingstech.dev@gmail.com">Start a Project</a>
+            <a class="btn-ghost clear-glass-action" href="#work" data-liquid-glass data-liquid-group="hero-glass"
+              data-liquid-variant="regular" data-liquid-strength="1.08">View Projects →</a>
+            <a class="btn-ghost btn-cv clear-glass-action" href="kingstech.pdf" target="_blank" rel="noopener"
+              aria-label="Download kingsTech CV as PDF" data-liquid-glass data-liquid-group="hero-glass"
+              data-liquid-variant="regular" data-liquid-strength="1.08">
+              <svg class="cv-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 3.5h7.2L19 8.3V20a.5.5 0 0 1-.5.5h-11A.5.5 0 0 1 7 20V4a.5.5 0 0 1 .5-.5Z" fill="none"
+                  stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+                <path d="M14 3.8V8h4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M10 12h6M10 15h6M10 18h4" fill="none" stroke="currentColor" stroke-width="1.7"
+                  stroke-linecap="round" />
+              </svg>
+              <span>View CV</span>
+            </a>
+          </div>
+          <div class="hero-meta reveal visible delay-3" aria-label="Portfolio summary">
+            <div class="meta-tile"><strong>4+ Years</strong><span>Building for real use</span></div>
+            <div class="meta-tile"><strong>Full-Stack</strong><span>Frontend, backend, CMS</span></div>
+            <div class="meta-tile"><strong>Product UI</strong><span>SaaS, commerce, tools</span></div>
+          </div>
+        </div>
+        <div class="portrait-stage reveal visible delay-2" aria-label="Portrait of Kingsley (kingsTech)">
+          <div class="portrait-frame">
+            <img class="portrait-img" src="assets/kings-portrait.jpg" fetchpriority="high" decoding="async"
+              alt="kingsTech founder and full-stack software engineer" />
+            <div class="portrait-status" aria-hidden="true" data-liquid-glass data-liquid-group="hero-glass"
+              data-liquid-variant="clear" data-liquid-clear-dim="0.46">FULL-STACK DEVELOPER · 4+ YEARS</div>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-cue" aria-hidden="true">Scroll</div>
+    </section>
+
+    <!-- BUILD DIRECTION CONSOLE -->
+    <section class="section-pad section-divider" aria-labelledby="directionTitle">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label reveal">Build Direction</div>
+            <h2 class="section-title reveal delay-1" id="directionTitle">Choose the build. See the focus.</h2>
+          </div>
+          <p class="section-copy reveal delay-2">Quick view of how I approach different project architectures.</p>
+        </div>
+        <div class="fit-console reveal delay-2" aria-label="Build direction selector">
+          <div class="fit-tabs liquid-panel-surface" role="tablist" aria-label="Project types" data-liquid-glass
+            data-liquid-group="fit-selector" data-liquid-group-host="fit-selector" data-liquid-variant="regular"
+            data-liquid-strength="1.00" data-liquid-merge="0">
+            <button class="fit-tab active" type="button" data-fit="role" role="tab" aria-selected="true">
+              <strong>Technical Role</strong>
+              <span>Frontend, full-stack, product UI, and remote development work.</span>
+            </button>
+            <button class="fit-tab" type="button" data-fit="saas" role="tab" aria-selected="false">
+              <strong>SaaS Platform</strong>
+              <span>Dashboards, workflows, portals, tools, and product systems.</span>
+            </button>
+            <button class="fit-tab" type="button" data-fit="business" role="tab" aria-selected="false">
+              <strong>Business Website</strong>
+              <span>Premium sites, SEO structure, conversion clarity, and branding.</span>
+            </button>
+            <button class="fit-tab" type="button" data-fit="commerce" role="tab" aria-selected="false">
+              <strong>Shopify Store</strong>
+              <span>Storefronts, product presentation, trust flow, and optimization.</span>
+            </button>
+          </div>
+          <div class="fit-display" aria-live="polite">
+            <div class="fit-kicker" id="fitKicker">Technical role</div>
+            <h3 class="fit-title" id="fitTitle">I bridge high-level product strategy, world-class UI, and robust
+              systems.</h3>
+            <p class="fit-copy" id="fitCopy">4+ years across React, Next.js, Node.js, TypeScript, WordPress, Shopify,
+              SEO, and UI-focused frontend systems.</p>
+            <div class="fit-output" id="fitOutput">
+              <div><strong>Frontend depth</strong><span>Responsive UI, bespoke design systems, and fluid interaction
+                  detail.</span></div>
+              <div><strong>Full-stack range</strong><span>Production APIs, high-throughput workflows, and resilient
+                  architecture.</span></div>
+              <div><strong>Business sense</strong><span>Conversion clarity, crisp brand positioning, and user-centric
+                  execution.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SELECTED PROJECTS -->
+    <section class="section-pad surface-section" id="work" aria-labelledby="workTitle">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label reveal">Selected Projects</div>
+            <h2 class="section-title reveal delay-1" id="workTitle">Selected build experience.</h2>
+          </div>
+          <a class="section-link brand-gold-action reveal delay-2"
+            href="mailto:kingstech.dev@gmail.com?subject=kingsTech%20Project%20Details%20Request">Request project
+            details →</a>
+        </div>
+        <div class="project-list">
+
+          <article class="project-row reveal">
+            <div class="project-num">01</div>
+            <div>
+              <div class="project-cat">Logistics Platform · Active Development · Staging</div>
+              <h3 class="project-title">Zionra – Logistics Platform</h3>
+            </div>
+            <div>
+              <p class="project-desc">Active-development logistics platform connecting customers with verified shipping
+                partners for structured air and sea cargo. Features multi-role onboarding, secure authentication, Google
+                sign-in, and status-aware shipping-partner application flows.</p>
+              <div class="project-tags"><span class="tag">Next.js</span><span class="tag">PostgreSQL</span><span
+                  class="tag">Auth</span><span class="tag">Staging</span></div>
+            </div>
+            <a class="project-cta" href="https://staging.zionra.com/" target="_blank" rel="noopener noreferrer"
+              aria-label="View Zionra staging build">View staging</a>
+          </article>
+
+          <article class="project-row reveal delay-1">
+            <div class="project-num">02</div>
+            <div>
+              <div class="project-cat">Football SaaS · Next.js</div>
+              <h3 class="project-title">SoccerHub – Match Booking &amp; Event Platform</h3>
+            </div>
+            <div>
+              <p class="project-desc">Full-stack SaaS platform for discovering and hosting football matches, with split
+                payments, QR ticketing, player verification, and organizer dashboards.</p>
+              <div class="project-tags"><span class="tag">Next.js</span><span class="tag">Events</span><span
+                  class="tag">Payments</span></div>
+            </div>
+            <a class="project-cta" href="https://match-craft-six.vercel.app/" target="_blank" rel="noopener noreferrer"
+              aria-label="View SoccerHub live project">View live</a>
+          </article>
+
+          <article class="project-row reveal delay-2">
+            <div class="project-num">03</div>
+            <div>
+              <div class="project-cat">HR SaaS · Next.js</div>
+              <h3 class="project-title">Complyn – Payslip &amp; Payroll Generator</h3>
+            </div>
+            <div>
+              <p class="project-desc">HR SaaS tool for generating professional payslips — employee records, salary
+                inputs, deductions, automated calculations, premium branding features, and instant PDF export.</p>
+              <div class="project-tags"><span class="tag">SaaS</span><span class="tag">Payroll</span><span
+                  class="tag">PDF</span></div>
+            </div>
+            <a class="project-cta" href="https://comply-red.vercel.app/" target="_blank" rel="noopener noreferrer"
+              aria-label="View Complyn live project">View live</a>
+          </article>
+
+          <article class="project-row reveal delay-3">
+            <div class="project-num">04</div>
+            <div>
+              <div class="project-cat">Restaurant System · QR Menu · Automation</div>
+              <h3 class="project-title">AfroLive – Restaurant Menu, Booking &amp; Admin System</h3>
+            </div>
+            <div>
+              <p class="project-desc">Restaurant system with QR-code menu access, customer ordering and booking flows,
+                waitlist setup, automated email integrations, order notifications, and a protected admin dashboard.</p>
+              <div class="project-tags"><span class="tag">QR Menu</span><span class="tag">Automation</span><span
+                  class="tag">Dashboard</span></div>
+            </div>
+            <details class="project-links">
+              <summary class="project-cta" style="list-style:none; cursor:pointer;"
+                aria-label="View AfroLive project links">View links</summary>
+              <div style="display:grid; gap:8px; margin-top:12px;">
+                <a class="project-cta" style="justify-content:flex-start; font-size:13px;" href="https://afrolivee.com/"
+                  target="_blank" rel="noopener noreferrer" aria-label="View AfroLive main website">Main site</a>
+                <a class="project-cta" style="justify-content:flex-start; font-size:13px;"
+                  href="https://menu.afrolivee.com/menu" target="_blank" rel="noopener noreferrer"
+                  aria-label="View AfroLive menu and ordering system">Menu system</a>
+                <a class="project-cta" style="justify-content:flex-start; font-size:13px;"
+                  href="https://menu.afrolivee.com/dashboard" target="_blank" rel="noopener noreferrer"
+                  aria-label="View AfroLive protected admin dashboard">Admin dashboard</a>
+              </div>
+            </details>
+          </article>
+
+          <article class="project-row reveal delay-3">
+            <div class="project-num">05</div>
+            <div>
+              <div class="project-cat">Football Booking Platform · Calendar · Dashboard</div>
+              <h3 class="project-title">SoccerZone.ng – Facility Booking &amp; Admin Platform</h3>
+            </div>
+            <div>
+              <p class="project-desc">Full booking platform for soccer facilities — available-time checks, calendar
+                scheduling, customer bookings, user dashboard, and admin dashboard for managing bookings.</p>
+              <div class="project-tags"><span class="tag">Booking</span><span class="tag">Calendar</span><span
+                  class="tag">Admin</span></div>
+            </div>
+            <a class="project-cta" href="https://www.soccerzone.ng/" target="_blank" rel="noopener noreferrer"
+              aria-label="View SoccerZone.ng live project">View live</a>
+          </article>
+
+          <article class="project-row reveal delay-3">
+            <div class="project-num">06</div>
+            <div>
+              <div class="project-cat">E-commerce · WordPress · UK Client</div>
+              <h3 class="project-title">Bundle-Haus – Hair E-commerce Store</h3>
+            </div>
+            <div>
+              <p class="project-desc">WordPress e-commerce storefront built for a UK hair client, with product
+                categories, variable product options, account and cart flows, featured collections, and responsive
+                shopping UX.</p>
+              <div class="project-tags"><span class="tag">WordPress</span><span class="tag">E-commerce</span><span
+                  class="tag">Client Work</span></div>
+            </div>
+            <a class="project-cta" href="https://bundle-haus.com/" target="_blank" rel="noopener noreferrer"
+              aria-label="View Bundle-Haus live project">View live</a>
+          </article>
+
+          <!-- Expandable Client Work -->
+          <details class="project-more reveal">
+            <summary class="project-more-toggle brand-gold-action">View more client work <span
+                aria-hidden="true">+5</span></summary>
+            <div class="project-more-list">
+              <article class="project-row">
+                <div class="project-num">07</div>
+                <div>
+                  <div class="project-cat">Mobile App · React Native</div>
+                  <h3 class="project-title">Queuemate – Real-Time Queue Management App</h3>
+                </div>
+                <div>
+                  <p class="project-desc">React Native Expo app helping barber shops and small businesses manage
+                    customer queues, wait times, and service flow in real time.</p>
+                  <div class="project-tags"><span class="tag">React Native</span><span class="tag">Expo</span><span
+                      class="tag">Real-time</span></div>
+                </div>
+                <a class="project-cta" href="mailto:kingstech.dev@gmail.com?subject=Queuemate%20Project%20Details"
+                  aria-label="Request Queuemate project details">Details on request</a>
+              </article>
+
+              <article class="project-row">
+                <div class="project-num">08</div>
+                <div>
+                  <div class="project-cat">Women’s Wellness · WordPress · Content</div>
+                  <h3 class="project-title">FitMomJay – Fitness &amp; Wellness Platform</h3>
+                </div>
+                <div>
+                  <p class="project-desc">WordPress wellness platform for moms, combining fitness and health content,
+                    product recommendations, affiliate shopping links, newsletter capture, and editorial category
+                    discovery.</p>
+                  <div class="project-tags"><span class="tag">WordPress</span><span class="tag">Wellness</span><span
+                      class="tag">Affiliate</span></div>
+                </div>
+                <a class="project-cta" href="https://www.fitmomjay.com/" target="_blank" rel="noopener noreferrer"
+                  aria-label="View FitMomJay live project">View live</a>
+              </article>
+
+              <article class="project-row">
+                <div class="project-num">09</div>
+                <div>
+                  <div class="project-cat">Trade Service Website · Plumbing &amp; Construction</div>
+                  <h3 class="project-title">WealthTechs – Plumbing &amp; Construction Service Website</h3>
+                </div>
+                <div>
+                  <p class="project-desc">Service website for a plumbing and construction business — clear service
+                    presentation, trust-focused layout, contact flow, and responsive structure for client enquiries.</p>
+                  <div class="project-tags"><span class="tag">Website</span><span class="tag">Plumbing</span><span
+                      class="tag">Construction</span></div>
+                </div>
+                <a class="project-cta" href="https://wealthtechs.co.uk/" target="_blank" rel="noopener noreferrer"
+                  aria-label="View WealthTechs live project">View live</a>
+              </article>
+
+              <article class="project-row">
+                <div class="project-num">10</div>
+                <div>
+                  <div class="project-cat">NGO Website · WordPress · Social Impact</div>
+                  <h3 class="project-title">GCA International – NGO Website</h3>
+                </div>
+                <div>
+                  <p class="project-desc">WordPress website for an NGO focused on philanthropy, advocacy, charity, and
+                    social impact, structured around its mission, initiatives, organization information, and supporter
+                    engagement.</p>
+                  <div class="project-tags"><span class="tag">WordPress</span><span class="tag">NGO</span><span
+                      class="tag">Responsive</span></div>
+                </div>
+                <a class="project-cta" href="https://gca-intl.org/" target="_blank" rel="noopener noreferrer"
+                  aria-label="View GCA International live project">View live</a>
+              </article>
+
+              <article class="project-row">
+                <div class="project-num">11</div>
+                <div>
+                  <div class="project-cat">Portfolio Website · React</div>
+                  <h3 class="project-title">Ayo Tomisin – UI/UX Designer Portfolio</h3>
+                </div>
+                <div>
+                  <p class="project-desc">Custom React portfolio site for a UI/UX designer — showcasing case studies,
+                    design focus areas, and professional presentation.</p>
+                  <div class="project-tags"><span class="tag">React</span><span class="tag">Portfolio</span><span
+                      class="tag">UI/UX</span></div>
+                </div>
+                <a class="project-cta" href="https://ayodeletomisin.com/" target="_blank" rel="noopener noreferrer"
+                  aria-label="View Ayo Tomisin portfolio live">View live</a>
+              </article>
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- EXECUTION ROADMAP -->
+    <section class="section-pad" id="execution" aria-labelledby="executionTitle">
+      <div class="container execution-wrap">
+
+        <div>
+          <div class="section-label reveal">Execution System</div>
+          <h2 class="section-title reveal delay-1" id="executionTitle">Modern stack. Practical execution.</h2>
+          <p class="section-copy reveal delay-2">Frontend, backend, CMS, commerce, and SEO foundations — structured into
+            a clear, predictable build process.</p>
+          <div class="tech-cloud reveal delay-3" aria-label="Core technologies">
+            <span class="tech-chip">React</span>
+            <span class="tech-chip">Next.js</span>
+            <span class="tech-chip">Node.js</span>
+            <span class="tech-chip">TypeScript</span>
+            <span class="tech-chip">JavaScript</span>
+            <span class="tech-chip">Tailwind CSS</span>
+            <span class="tech-chip">WordPress</span>
+            <span class="tech-chip">Shopify</span>
+            <span class="tech-chip">SEO</span>
+          </div>
+          <div class="capability-ribbon reveal delay-3" aria-hidden="true">
+            <div class="ribbon-track">
+              <span>React</span><span>Next.js</span><span>Node.js</span><span>TypeScript</span><span>WordPress</span><span>Shopify</span><span>SEO</span><span>SaaS
+                UI</span><span>Dashboards</span><span>Product
+                Systems</span><span>React</span><span>Next.js</span><span>Node.js</span><span>TypeScript</span><span>WordPress</span><span>Shopify</span><span>SEO</span><span>SaaS
+                UI</span><span>Dashboards</span><span>Product Systems</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="execution-panel reveal delay-2">
+
+          <!-- Desktop Roadmap -->
+          <div class="rm-wrap" aria-label="Execution roadmap">
+            <div class="rm-row rm-row-top">
+              <div class="rm-col"></div>
+              <div class="rm-col rm-c2">
+                <div class="rm-panel">
+                  <h4>Shape the UI</h4>
+                  <ol>
+                    <li>Map pages</li>
+                    <li>Design components</li>
+                    <li>Plan states</li>
+                    <li>Mobile flow</li>
+                  </ol>
+                </div>
+                <div class="rm-stem"></div>
+              </div>
+              <div class="rm-col"></div>
+              <div class="rm-col rm-c4">
+                <div class="rm-panel">
+                  <h4>Prove quality</h4>
+                  <ol>
+                    <li>Test screens</li>
+                    <li>Review speed</li>
+                    <li>Check SEO</li>
+                    <li>Fix friction</li>
+                  </ol>
+                </div>
+                <div class="rm-stem"></div>
+              </div>
+              <div class="rm-col"></div>
+            </div>
+
+            <div class="rm-rail" data-liquid-group-host="execution-desktop">
+              <div class="rm-node rm-c1"><button class="rm-node-inner" type="button" data-execution-step="1"
+                  aria-pressed="false" data-liquid-glass data-liquid-group="execution-desktop"
+                  data-liquid-variant="regular"><span class="rm-num">01</span><i class="rm-icon rm-icon-circle"
+                    aria-hidden="true"></i><strong>Scope</strong></button></div>
+              <div class="rm-node rm-c2"><button class="rm-node-inner" type="button" data-execution-step="2"
+                  aria-pressed="false" data-liquid-glass data-liquid-group="execution-desktop"
+                  data-liquid-variant="regular"><span class="rm-num">02</span><i class="rm-icon rm-icon-dome"
+                    aria-hidden="true"></i><strong>Design</strong></button></div>
+              <div class="rm-node rm-c3"><button class="rm-node-inner is-selected" type="button" data-execution-step="3"
+                  aria-pressed="true" data-liquid-glass data-liquid-group="execution-desktop"
+                  data-liquid-variant="regular" data-liquid-tint="1"><span class="rm-num">03</span><i
+                    class="rm-icon rm-icon-diamond" aria-hidden="true"></i><strong>Build</strong></button></div>
+              <div class="rm-node rm-c4"><button class="rm-node-inner" type="button" data-execution-step="4"
+                  aria-pressed="false" data-liquid-glass data-liquid-group="execution-desktop"
+                  data-liquid-variant="regular"><span class="rm-num">04</span><i class="rm-icon rm-icon-square"
+                    aria-hidden="true"></i><strong>Test</strong></button></div>
+              <div class="rm-node rm-c5"><button class="rm-node-inner" type="button" data-execution-step="5"
+                  aria-pressed="false" data-liquid-glass data-liquid-group="execution-desktop"
+                  data-liquid-variant="regular"><span class="rm-num">05</span><i class="rm-icon rm-icon-ship"
+                    aria-hidden="true"></i><strong>Ship</strong></button></div>
+            </div>
+
+            <div class="rm-row rm-row-bottom">
+              <div class="rm-col rm-c1">
+                <div class="rm-stem"></div>
+                <div class="rm-panel">
+                  <h4>Meet the build</h4>
+                  <ol>
+                    <li>Define goals</li>
+                    <li>Identify users</li>
+                    <li>Set scope</li>
+                    <li>Choose stack</li>
+                  </ol>
+                </div>
+              </div>
+              <div class="rm-col"></div>
+              <div class="rm-col rm-c3">
+                <div class="rm-stem"></div>
+                <div class="rm-panel">
+                  <h4>Make it work</h4>
+                  <ol>
+                    <li>Develop frontend</li>
+                    <li>Connect logic</li>
+                    <li>Integrate CMS/API</li>
+                    <li>Clean code</li>
+                  </ol>
+                </div>
+              </div>
+              <div class="rm-col"></div>
+              <div class="rm-col rm-c5">
+                <div class="rm-stem"></div>
+                <div class="rm-panel">
+                  <h4>Launch clean</h4>
+                  <ol>
+                    <li>Deploy</li>
+                    <li>Handoff</li>
+                    <li>Track issues</li>
+                    <li>Improve next</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Stepper -->
+          <div class="rm-mobile" aria-label="Execution steps" data-liquid-group-host="execution-mobile">
+            <div class="rm-m-step">
+              <div class="rm-m-left"><button class="rm-m-dot" type="button" data-execution-step="1"
+                  aria-label="Select Scope step" aria-pressed="false" data-liquid-glass
+                  data-liquid-group="execution-mobile" data-liquid-variant="regular">01</button>
+                <div class="rm-m-thread"></div>
+              </div>
+              <div class="rm-m-body">
+                <h4>Scope</h4>
+                <p>Define goals, users, scope, and stack.</p>
+              </div>
+            </div>
+            <div class="rm-m-step">
+              <div class="rm-m-left"><button class="rm-m-dot" type="button" data-execution-step="2"
+                  aria-label="Select Design step" aria-pressed="false" data-liquid-glass
+                  data-liquid-group="execution-mobile" data-liquid-variant="regular">02</button>
+                <div class="rm-m-thread"></div>
+              </div>
+              <div class="rm-m-body">
+                <h4>Design</h4>
+                <p>Map pages, components, states, and mobile flow.</p>
+              </div>
+            </div>
+            <div class="rm-m-step">
+              <div class="rm-m-left"><button class="rm-m-dot is-selected" type="button" data-execution-step="3"
+                  aria-label="Select Build step" aria-pressed="true" data-liquid-glass
+                  data-liquid-group="execution-mobile" data-liquid-variant="regular" data-liquid-tint="1">03</button>
+                <div class="rm-m-thread"></div>
+              </div>
+              <div class="rm-m-body">
+                <h4>Build</h4>
+                <p>Develop frontend, logic, CMS/API, and clean code.</p>
+              </div>
+            </div>
+            <div class="rm-m-step">
+              <div class="rm-m-left"><button class="rm-m-dot" type="button" data-execution-step="4"
+                  aria-label="Select Test step" aria-pressed="false" data-liquid-glass
+                  data-liquid-group="execution-mobile" data-liquid-variant="regular">04</button>
+                <div class="rm-m-thread"></div>
+              </div>
+              <div class="rm-m-body">
+                <h4>Test</h4>
+                <p>Test screens, speed, SEO, and friction points.</p>
+              </div>
+            </div>
+            <div class="rm-m-step">
+              <div class="rm-m-left"><button class="rm-m-dot" type="button" data-execution-step="5"
+                  aria-label="Select Ship step" aria-pressed="false" data-liquid-glass
+                  data-liquid-group="execution-mobile" data-liquid-variant="regular">05</button>
+                <div class="rm-m-thread"></div>
+              </div>
+              <div class="rm-m-body">
+                <h4>Ship</h4>
+                <p>Deploy, handoff, track issues, and improve next.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="section-pad surface-section" id="services" aria-labelledby="servicesTitle">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label reveal">Services</div>
+            <h2 class="section-title reveal delay-1" id="servicesTitle">What I build.</h2>
+          </div>
+          <p class="section-copy reveal delay-2">Websites, apps, CMS systems, stores, SEO foundations, and
+            high-converting product interfaces.</p>
+        </div>
+        <div class="services-grid" data-liquid-group-host="service-icons">
+          <article class="service-card reveal">
+            <div>
+              <span class="service-num">01</span>
+              <h3>Web Development</h3>
+              <p>Custom business websites, landing pages, and portfolios built with React and Next.js for high
+                performance and visual punch.</p>
+            </div>
+            <a class="service-action round-liquid-icon"
+              href="mailto:kingstech.dev@gmail.com?subject=kingsTech%20Web%20Development%20Inquiry"
+              aria-label="Discuss a web development project" data-liquid-glass data-liquid-group="service-icons"
+              data-liquid-variant="regular" data-liquid-strength="1.04">
+              <span class="liquid-icon-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"
+                  aria-hidden="true">
+                  <path d="M7 17L17 7M9 7h8v8" />
+                </svg></span>
+            </a>
+          </article>
+          <article class="service-card is-featured reveal delay-1">
+            <div>
+              <span class="service-num">02</span>
+              <h3>App Development</h3>
+              <p>SaaS platforms, dashboards, internal tools, and workflow apps engineered with clean architecture and
+                real product logic.</p>
+            </div>
+            <a class="service-action round-liquid-icon"
+              href="mailto:kingstech.dev@gmail.com?subject=kingsTech%20App%20Development%20Inquiry"
+              aria-label="Discuss an app development project" data-liquid-glass data-liquid-group="service-icons"
+              data-liquid-variant="regular" data-liquid-strength="1.04">
+              <span class="liquid-icon-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"
+                  aria-hidden="true">
+                  <path d="M7 17L17 7M9 7h8v8" />
+                </svg></span>
+            </a>
+          </article>
+          <article class="service-card reveal delay-2">
+            <div>
+              <span class="service-num">03</span>
+              <h3>WordPress Development</h3>
+              <p>Custom WordPress themes and headless systems with intuitive CMS editing flows, clean code, and
+                SEO-ready page architecture.</p>
+            </div>
+            <a class="service-action round-liquid-icon"
+              href="mailto:kingstech.dev@gmail.com?subject=kingsTech%20WordPress%20Inquiry"
+              aria-label="Discuss a WordPress project" data-liquid-glass data-liquid-group="service-icons"
+              data-liquid-variant="regular" data-liquid-strength="1.04">
+              <span class="liquid-icon-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"
+                  aria-hidden="true">
+                  <path d="M7 17L17 7M9 7h8v8" />
+                </svg></span>
+            </a>
+          </article>
+          <article class="service-card reveal delay-3">
+            <div>
+              <span class="service-num">04</span>
+              <h3>Shopify Development</h3>
+              <p>Conversion-focused Shopify storefronts with theme customization, product clarity, speed optimization,
+                and seamless store management.</p>
+            </div>
+            <a class="service-action round-liquid-icon"
+              href="mailto:kingstech.dev@gmail.com?subject=kingsTech%20Shopify%20Inquiry"
+              aria-label="Discuss a Shopify project" data-liquid-glass data-liquid-group="service-icons"
+              data-liquid-variant="regular" data-liquid-strength="1.04">
+              <span class="liquid-icon-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"
+                  aria-hidden="true">
+                  <path d="M7 17L17 7M9 7h8v8" />
+                </svg></span>
+            </a>
+          </article>
+          <article class="service-card reveal delay-3">
+            <div>
+              <span class="service-num">05</span>
+              <h3>SEO Foundations</h3>
+              <p>Technical SEO audits, semantic HTML structure, JSON-LD Schema markup, metadata optimization, and
+                search-ready indexation.</p>
+            </div>
+            <a class="service-action round-liquid-icon"
+              href="mailto:kingstech.dev@gmail.com?subject=kingsTech%20SEO%20Inquiry"
+              aria-label="Discuss an SEO project" data-liquid-glass data-liquid-group="service-icons"
+              data-liquid-variant="regular" data-liquid-strength="1.04">
+              <span class="liquid-icon-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"
+                  aria-hidden="true">
+                  <path d="M7 17L17 7M9 7h8v8" />
+                </svg></span>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="section-pad surface-section" id="about" aria-labelledby="aboutTitle">
+      <div class="container about-grid">
+        <div class="about-card reveal">
+          <div class="proof-strip">
+            <div><strong>4+</strong><span>Years</span></div>
+            <div><strong>9</strong><span>Core tools</span></div>
+            <div><strong>5</strong><span>Build types</span></div>
+          </div>
+          <p>"I like building products that feel clean, intentional, and useful — not just impressive on the surface."
+          </p>
+        </div>
+        <div class="about-copy">
+          <div class="section-label reveal">About Me</div>
+          <h2 class="section-title reveal delay-1" id="aboutTitle">I'm Kingsley — full-stack developer and digital
+            creator behind kingsTech.</h2>
+          <p class="reveal delay-2">I build websites, web apps, SaaS platforms, Shopify stores, WordPress systems, and
+            custom tools engineered for durability and conversion.</p>
+          <p class="reveal delay-2">My focus is clean architecture, modern UI, speed, scalability, SEO, and product
+            experience that turns visitors into repeat customers.</p>
+          <div class="about-note reveal delay-3">I build useful digital products that feel sharp, intentional, and ready
+            for real users.</div>
+          <div class="about-actions reveal delay-3">
+            <a class="btn-primary brand-gold-action about-gold-cv" href="kingstech.pdf" target="_blank" rel="noopener"
+              aria-label="View kingsTech CV as PDF">
+              <svg class="cv-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 3.5h7.2L19 8.3V20a.5.5 0 0 1-.5.5h-11A.5.5 0 0 1 7 20V4a.5.5 0 0 1 .5-.5Z" fill="none"
+                  stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+                <path d="M14 3.8V8h4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M10 12h6M10 15h6M10 18h4" fill="none" stroke="currentColor" stroke-width="1.7"
+                  stroke-linecap="round" />
+              </svg>
+              <span>View CV</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section class="section-pad" id="contact" aria-labelledby="contactTitle">
+      <div class="container contact-grid" data-liquid-group-host="contact-glass">
+        <div class="contact-panel reveal">
+          <h2 id="contactTitle">Ready to build something <strong>serious?</strong></h2>
+          <p>Available for projects, collaborations, and frontend/full-stack engineering roles.</p>
+          <div class="hero-actions">
+            <a class="btn-primary brand-gold-action"
+              href="mailto:kingstech.dev@gmail.com?subject=kingsTech%20Project%20Inquiry">Email kingsTech</a>
+            <a class="btn-ghost clear-glass-action" href="tel:+2348022982025" data-liquid-glass
+              data-liquid-group="contact-glass" data-liquid-variant="regular" data-liquid-strength="1.08">Call Directly
+              →</a>
+          </div>
+        </div>
+        <div class="contact-panel reveal delay-1">
+          <address>
+            <div class="contact-list">
+              <a class="contact-link" href="mailto:kingstech.dev@gmail.com">
+                <strong>Email</strong>
+                <span>kingstech.dev@gmail.com</span>
+                <span class="contact-arrow round-liquid-icon" aria-hidden="true" data-liquid-glass
+                  data-liquid-group="contact-arrows" data-liquid-variant="regular" data-liquid-strength="1.04">
+                  <span class="liquid-icon-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"
+                      aria-hidden="true">
+                      <path d="M5 12h13M14 8l4 4-4 4" />
+                    </svg></span>
+                </span>
+              </a>
+              <a class="contact-link" href="https://wa.me/2348022982025" target="_blank" rel="noopener noreferrer">
+                <strong>WhatsApp</strong>
+                <span>+234 802 298 2025</span>
+                <span class="contact-arrow round-liquid-icon" aria-hidden="true" data-liquid-glass
+                  data-liquid-group="contact-arrows" data-liquid-variant="regular" data-liquid-strength="1.04">
+                  <span class="liquid-icon-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"
+                      aria-hidden="true">
+                      <path d="M5 12h13M14 8l4 4-4 4" />
+                    </svg></span>
+                </span>
+              </a>
+              <a class="contact-link" href="tel:+2348022982025">
+                <strong>Direct Call</strong>
+                <span>+234 802 298 2025</span>
+                <span class="contact-arrow round-liquid-icon" aria-hidden="true" data-liquid-glass
+                  data-liquid-group="contact-arrows" data-liquid-variant="regular" data-liquid-strength="1.04">
+                  <span class="liquid-icon-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"
+                      aria-hidden="true">
+                      <path d="M5 12h13M14 8l4 4-4 4" />
+                    </svg></span>
+                </span>
+              </a>
+              <a class="contact-link" href="https://x.com/kingstech_dev" target="_blank" rel="noopener noreferrer">
+                <strong>X / Twitter</strong>
+                <span>@kingstech_dev</span>
+                <span class="contact-arrow round-liquid-icon" aria-hidden="true" data-liquid-glass
+                  data-liquid-group="contact-arrows" data-liquid-variant="regular" data-liquid-strength="1.04">
+                  <span class="liquid-icon-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"
+                      aria-hidden="true">
+                      <path d="M5 12h13M14 8l4 4-4 4" />
+                    </svg></span>
+                </span>
+              </a>
+              <a class="contact-link" href="https://www.linkedin.com/in/kingstech" target="_blank"
+                rel="noopener noreferrer">
+                <strong>LinkedIn</strong>
+                <span>/in/kingstech</span>
+                <span class="contact-arrow round-liquid-icon" aria-hidden="true" data-liquid-glass
+                  data-liquid-group="contact-arrows" data-liquid-variant="regular" data-liquid-strength="1.04">
+                  <span class="liquid-icon-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"
+                      aria-hidden="true">
+                      <path d="M5 12h13M14 8l4 4-4 4" />
+                    </svg></span>
+                </span>
+              </a>
+              <a class="contact-link" href="https://github.com/kingstech-dev" target="_blank" rel="noopener noreferrer">
+                <strong>GitHub</strong>
+                <span>@kingstech-dev</span>
+                <span class="contact-arrow round-liquid-icon" aria-hidden="true" data-liquid-glass
+                  data-liquid-group="contact-arrows" data-liquid-variant="regular" data-liquid-strength="1.04">
+                  <span class="liquid-icon-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"
+                      aria-hidden="true">
+                      <path d="M5 12h13M14 8l4 4-4 4" />
+                    </svg></span>
+                </span>
+              </a>
+            </div>
+          </address>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-wordmark">kingsTech</div>
+          <p class="footer-tagline">Full-stack software developer and digital creator building high-performance
+            websites, apps, SaaS products, Shopify stores, WordPress systems, and premium digital experiences.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="#work">Projects</a>
+          <a href="#execution">Execution</a>
+          <a href="#services">Services</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <a href="mailto:kingstech.dev@gmail.com">Email</a>
+          <a href="https://wa.me/2348022982025" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a href="tel:+2348022982025">Direct Call</a>
+          <a href="https://x.com/kingstech_dev" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
+          <a href="https://www.linkedin.com/in/kingstech" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://github.com/kingstech-dev" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 kingsTech. All rights reserved.</span>
+        <span>Full-stack development. Product thinking. Premium execution.</span>
+      </div>
+    </div>
+    <a class="back-to-top round-liquid-icon" href="#top" aria-label="Back to top" data-liquid-glass
+      data-liquid-group="footer-icon" data-liquid-variant="regular" data-liquid-strength="1.04">
+      <span class="liquid-icon-glyph" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+          <path d="M12 19V6M8 10l4-4 4 4" />
+        </svg>
+      </span>
+    </a>
+  </footer>
+
+  <script src="script.js"></script>
+  <script type="module" src="liquid-glass.js"></script>
+</body>
+
+</html>

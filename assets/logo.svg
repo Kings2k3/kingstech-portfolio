@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 64" fill="none" width="280" height="64">
+  <defs>
+    <linearGradient id="kgold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E5C388"/>
+      <stop offset="50%" stop-color="#B08D57"/>
+      <stop offset="100%" stop-color="#8C6830"/>
+    </linearGradient>
+    <linearGradient id="kaccent" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.4"/>
+    </linearGradient>
+  </defs>
+  <!-- Crown / K Icon Symbol -->
+  <g transform="translate(6, 8)">
+    <!-- Outer Shield / Hex Ring subtle glow -->
+    <path d="M24 0 L44 11.5 L44 34.5 L24 46 L4 34.5 L4 11.5 Z" fill="none" stroke="url(#kgold)" stroke-width="1.8" stroke-opacity="0.4"/>
+    <!-- Crown Facets -->
+    <path d="M12 32 L16 16 L24 23 L32 16 L36 32 Z" fill="url(#kgold)" fill-opacity="0.15" stroke="url(#kgold)" stroke-width="1.8" stroke-linejoin="round"/>
+    <!-- Tech Center Vertex -->
+    <circle cx="24" cy="23" r="2.5" fill="#E5C388"/>
+    <circle cx="16" cy="16" r="2" fill="#E5C388"/>
+    <circle cx="32" cy="16" r="2" fill="#E5C388"/>
+    <!-- Base Plate -->
+    <path d="M14 35 L34 35" stroke="url(#kgold)" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Wordmark Text -->
+  <text x="64" y="36" font-family="'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-weight="800" font-size="24" letter-spacing="-0.03em" fill="url(#kgold)">
+    kings<tspan fill="url(#kgold)">Tech</tspan>
+  </text>
+  <text x="66" y="49" font-family="'Space Grotesk', 'Inter', monospace" font-weight="600" font-size="8" letter-spacing="0.28em" fill="url(#kgold)" opacity="0.85">
+    SOFTWARE &amp; PRODUCT
+  </text>
+</svg>
