@@ -3735,3 +3735,88 @@ html body :is(.brand-gold-action, .nav-cta, .btn-primary, .project-more-toggle) 
   transition: opacity .15s ease-out !important;
 }
 
+/* =========================================================
+   PROJECTS SECTION - CURATED EMPTY STATE
+========================================================= */
+.projects-empty-state {
+  padding: 32px 0 16px;
+}
+
+.empty-state-card {
+  position: relative;
+  border: 1px solid var(--border-mid);
+  border-radius: 24px;
+  padding: clamp(36px, 5vw, 64px) clamp(24px, 5vw, 54px);
+  background: rgba(var(--surface-rgb), 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.empty-state-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent 70%);
+}
+
+.empty-state-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--font-button);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.empty-state-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.empty-state-title {
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-size: clamp(26px, 3.2vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  max-width: 780px;
+}
+
+.empty-state-desc {
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: clamp(16px, 1.25vw, 18px);
+  line-height: 1.7;
+  max-width: 680px;
+}
+
+.empty-state-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+
