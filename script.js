@@ -579,6 +579,12 @@ selectExecutionStep(3);
    07. SCROLL REVEAL ANIMATION
 ========================================================= */
 const revealEls = document.querySelectorAll('.reveal:not(.visible)');
+const isMobileViewport = window.innerWidth <= 768 || window.matchMedia('(hover: none)').matches;
+
+if (isMobileViewport) {
+  revealEls.forEach((el) => el.classList.add('visible'));
+}
+
 const obs = new IntersectionObserver((entries) => {
   entries.forEach((e) => {
     if (e.isIntersecting) {
@@ -586,7 +592,7 @@ const obs = new IntersectionObserver((entries) => {
       obs.unobserve(e.target);
     }
   });
-}, { threshold: 0.06, rootMargin: '0px 0px -12px 0px' });
+}, { threshold: 0.01, rootMargin: '250px 0px 100px 0px' });
 revealEls.forEach((el) => obs.observe(el));
 
 /* =========================================================
