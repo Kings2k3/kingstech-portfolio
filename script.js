@@ -579,11 +579,6 @@ selectExecutionStep(3);
    07. SCROLL REVEAL ANIMATION
 ========================================================= */
 const revealEls = document.querySelectorAll('.reveal:not(.visible)');
-const isMobileViewport = window.innerWidth <= 768 || window.matchMedia('(hover: none)').matches;
-
-if (isMobileViewport) {
-  revealEls.forEach((el) => el.classList.add('visible'));
-}
 
 const obs = new IntersectionObserver((entries) => {
   entries.forEach((e) => {
@@ -592,8 +587,20 @@ const obs = new IntersectionObserver((entries) => {
       obs.unobserve(e.target);
     }
   });
-}, { threshold: 0.01, rootMargin: '250px 0px 100px 0px' });
-revealEls.forEach((el) => obs.observe(el));
+}, {
+  threshold: 0.02,
+  rootMargin: '0px 0px -30px 0px'
+});
+
+revealEls.forEach((el) => {
+  const rect = el.getBoundingClientRect();
+  // Any element already in viewport on load reveals immediately
+  if (rect.top < window.innerHeight - 20) {
+    el.classList.add('visible');
+  } else {
+    obs.observe(el);
+  }
+});
 
 /* =========================================================
    08. CUSTOM MAGNETIC CURSOR & AMBIENT VISUAL EFFECTS
