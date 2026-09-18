@@ -224,40 +224,64 @@ setStudioState(false);
 setMenuState(false);
 
 /* =========================================================
-   02B. FIRST-VISIT BOOT / WARM START
+   02B. PRELOADER SCREEN (0 -> 100 COUNTER & CROWN)
 ========================================================= */
 (() => {
-  const boot = window.__KINGS_BOOT || window.__RAY_BOOT;
   const loader = document.getElementById('bootLoader');
-  if (!boot || !loader || boot.warm) {
-    root.classList.add('boot-complete');
+  const counterEl = document.getElementById('bootCounter');
+  const progressEl = document.getElementById('bootProgressBar');
+
+  if (!loader || !counterEl || !progressEl) {
+    document.documentElement.classList.add('boot-complete');
     return;
   }
 
-  root.setAttribute('aria-busy', 'true');
-  const minVisibleMs = 80;
-  const hardDeadlineMs = 260;
-  let finished = false;
+  document.documentElement.setAttribute('aria-busy', 'true');
 
-  const finish = () => {
-    if (finished) return;
-    finished = true;
-    const elapsed = performance.now() - (boot.startedAt || performance.now());
-    const wait = Math.max(0, minVisibleMs - elapsed);
-    window.setTimeout(() => {
-      root.classList.add('boot-complete');
-      root.removeAttribute('aria-busy');
-      try { localStorage.setItem(boot.key, 'ready'); } catch (_) {}
-      window.setTimeout(() => loader.remove(), 200);
-    }, wait);
-  };
+  const duration = 1250; // 1.25s smooth progress
+  const startTime = performance.now();
+  let completed = false;
 
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    finish();
-  } else {
-    document.addEventListener('DOMContentLoaded', finish, { once: true });
+  function updateLoader(currentTime) {
+    const elapsed = currentTime - startTime;
+    const rawProgress = Math.min(1, elapsed / duration);
+
+    // Ease-in-out quadratic curve for responsive feeling
+    const easeProgress = rawProgress < 0.5
+      ? 2 * rawProgress * rawProgress
+      : -1 + (4 - 2 * rawProgress) * rawProgress;
+
+    const currentPercent = Math.min(100, Math.floor(easeProgress * 100));
+
+    counterEl.textContent = currentPercent;
+    progressEl.style.width = currentPercent + '%';
+
+    if (rawProgress < 1) {
+      requestAnimationFrame(updateLoader);
+    } else {
+      finishLoader();
+    }
   }
-  window.setTimeout(finish, hardDeadlineMs);
+
+  function finishLoader() {
+    if (completed) return;
+    completed = true;
+    counterEl.textContent = '100';
+    progressEl.style.width = '100%';
+
+    window.setTimeout(() => {
+      document.documentElement.classList.add('boot-complete');
+      document.documentElement.removeAttribute('aria-busy');
+      window.setTimeout(() => {
+        if (loader && loader.parentNode) {
+          loader.remove();
+        }
+      }, 550);
+    }, 120);
+  }
+
+  requestAnimationFrame(updateLoader);
+  window.setTimeout(finishLoader, 2200);
 })();
 
 studioToggle.addEventListener('click', () => { setStudioState(!studio.classList.contains('open')); setMenuState(false); });
